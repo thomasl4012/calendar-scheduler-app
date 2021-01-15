@@ -36,3 +36,14 @@
     transform: rotate(360deg);
   }
 }
+
+.MuiOutlinedInput-root {
+
+  margin-bottom: 10px;
+}
+
+
+.MuiSelect-select {
+      
+     min-width: 182px !important;
+    }
