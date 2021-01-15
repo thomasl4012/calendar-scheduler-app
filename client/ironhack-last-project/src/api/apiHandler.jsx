@@ -52,5 +52,8 @@ export default {
       .then((res) => res.data)
       .catch(errorHandler);
   },
+   patch(endPoint, data) {
+    return this.service.patch(endPoint, data);
+  }
  
 };

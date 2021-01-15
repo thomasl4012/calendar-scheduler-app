@@ -16,7 +16,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ApiHandler from '../api/apiHandler'
-
+import { Link } from "react-router-dom";
 
 
 function descendingComparator(a, b, orderBy) {
@@ -242,9 +242,12 @@ export default function EnhancedTable() {
                       <TableCell align="center">{row.lastName}</TableCell>
                       <TableCell align="center">{row.team}</TableCell>
                         <TableCell align="center">  
+                          <Link to={`/user/edit/${row._id}`}>
                          <IconButton aria-label="update">
                         <UpdateIcon />
                         </IconButton>
+                         </Link>
+
                         </TableCell>
                       <TableCell align="center">
                       <IconButton aria-label="delete" onClick={() => handleDelete(row._id)}>
