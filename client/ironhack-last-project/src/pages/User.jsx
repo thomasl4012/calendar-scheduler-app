@@ -169,14 +169,17 @@ export default function EnhancedTable() {
     setSelected([]);
   };
 
- const handleDelete = (userId) => {
+ const  handleDelete = (userId) => {
     ApiHandler
-    .removeUser(userId)
-    .then(() => {
-     console.log("done")
-     
-      
-    });
+      .removeUser(userId)
+      .then((apiResponse) => {
+        const usersUpdated = data.filter(p => p._id !== userId);
+        setData(usersUpdated)
+       
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
   
 
