@@ -17,7 +17,7 @@ import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ApiHandler from '../api/apiHandler'
 import { Link } from "react-router-dom";
-
+import UserEdit from "../components/Dialogs/UserEdit"
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -242,11 +242,7 @@ export default function EnhancedTable() {
                       <TableCell align="center">{row.lastName}</TableCell>
                       <TableCell align="center">{row.team}</TableCell>
                         <TableCell align="center">  
-                          <Link to={`/user/edit/${row._id}`}>
-                         <IconButton aria-label="update">
-                        <UpdateIcon />
-                        </IconButton>
-                         </Link>
+                        <UserEdit id = {row._id}/>
 
                         </TableCell>
                       <TableCell align="center">

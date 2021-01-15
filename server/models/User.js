@@ -6,10 +6,9 @@ const userSchema = new Schema({
   lastName: String,
   email: String,
   password: String,
-  team: {
-    type: String,
-    enum: ["red", "yellow", "blue"],
-},
+  team: [
+    { type: Schema.Types.ObjectId, ref: "team", default: [] },
+  ],
   role: {
     type: String,
     enum: ["admin", "user"],

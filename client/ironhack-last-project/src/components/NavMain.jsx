@@ -4,6 +4,7 @@ import { withUser } from "../components/Auth/withUser";
 import apiHandler from "../api/apiHandler";
 import Signin from "./Dialogs/Signin"
 import Signup from "./Dialogs/Signup"
+import Teamcreate from "./Dialogs/Teamcreate"
 import "../styles/NavMain.css";
 
 const NavMain = (props) => {
@@ -31,6 +32,9 @@ const NavMain = (props) => {
           <React.Fragment>
            <li>
               <NavLink to="/user">Users</NavLink>
+            </li>
+            <li>
+              <Teamcreate/>
             </li>
             <li>
               <NavLink to="/profile">

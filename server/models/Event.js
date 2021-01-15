@@ -5,7 +5,7 @@ const eventSchema = new Schema({
   name: String,
   start_date: String,
   end_date: String,
-  userId: { type: Schema.Types.ObjectId, ref: "userId"},
+  userId: [{ type: Schema.Types.ObjectId, ref: "userId"}],
   type: {
     type: String,
     enum: ["shift", "off", "oncall"],

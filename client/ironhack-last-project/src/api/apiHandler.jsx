@@ -54,6 +54,9 @@ export default {
   },
    patch(endPoint, data) {
     return this.service.patch(endPoint, data);
+  },
+   post(endPoint, data) {
+    return this.service.post(endPoint, data);
   }
  
 };

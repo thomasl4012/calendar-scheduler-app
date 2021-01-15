@@ -22,7 +22,7 @@ const team = [
 ];
 
 class FormEditUser extends React.Component {
-  state = [];
+  state = {};
  
   componentDidMount() {
       
@@ -63,9 +63,8 @@ class FormEditUser extends React.Component {
        lastName: this.state.lastName,
        team: this.state.team,
       })
-      .then((apiResponse) => {
-        this.props.push("/user");
-        // console.log(apiResponse);
+      .then(() => {
+       window.location.reload()
       })
       .catch((err) => {
         console.log(err);
