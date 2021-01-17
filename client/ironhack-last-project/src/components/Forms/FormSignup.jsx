@@ -2,31 +2,13 @@ import React, { Component } from "react";
 import { withRouter, Redirect } from "react-router-dom";
 import { UserContext } from "../Auth/UserContext";
 import apiHandler from "../../api/apiHandler";
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Icon from '@material-ui/core/Icon';
-import MenuItem from '@material-ui/core/MenuItem';
-
-const team = [
-  {
-    value: 'red',
-    label: 'Red',
-  },
-  {
-    value: 'blue',
-    label: 'Blue',
-  },
-  {
-    value: 'yellow',
-    label: 'Yellow',
-  },
-];
-
+import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
+import Icon from "@material-ui/core/Icon";
+import MenuItem from "@material-ui/core/MenuItem";
 
 class FormSignup extends Component {
   static contextType = UserContext;
-
-  state = [];
 
   handleChange = (event) => {
     const value = event.target.value;
@@ -55,78 +37,52 @@ class FormSignup extends Component {
 
     return (
       <div>
-      <form onChange={this.handleChange} onSubmit={this.handleSubmit}>
-     <TextField
-          id="outlined-text-input"
-          label="First Name"
-          type="text"
-          autoComplete="current-password"
-          variant="outlined"
-          name="firstName"
-
-        />
-        <br/>
-           <TextField
-          id="outlined-text-input"
-          label="Last Name"
-          type="text"
-          autoComplete="current-password"
-          variant="outlined"
-          name="lastName"
-
-        />
-        <br/>
-    <TextField
-          id="outlined-email-input"
-          label="Email"
-          type="email"
-          autoComplete="current-password"
-          variant="outlined"
-          name="email"
-
-        />
-        <br/>
-    <TextField
-       id="outlined-select-currency"
-          label="Choose your team"
-          select
-        
-          variant="outlined"
-          name="team"
-          value={team}
-           onChange={this.handleChange}
-          
-
-        >
-        {team.map((option) => (
-            <MenuItem key={option.value} value={option.value}>
-              {option.label}
-            </MenuItem>
-          ))}
-
-</TextField>
-<br/>
-         <TextField
-          id="outlined-password-input"
-          label="Password"
-          type="password"
-          autoComplete="current-password"
-          variant="outlined"
-          name="password"
-
-        />
-        <br/>
-        <Button
-        variant="contained"
-        color="primary"
-        type="submit"
-        
-        endIcon={<Icon>send</Icon>}
-       
-      >
-        Sign up
-      </Button>
-      </form>
+        <form onChange={this.handleChange} onSubmit={this.handleSubmit}>
+          <TextField
+            id="outlined-text-input"
+            label="First Name"
+            type="text"
+            autoComplete="current-password"
+            variant="outlined"
+            name="firstName"
+          />
+          <br />
+          <TextField
+            id="outlined-text-input"
+            label="Last Name"
+            type="text"
+            autoComplete="current-password"
+            variant="outlined"
+            name="lastName"
+          />
+          <br />
+          <TextField
+            id="outlined-email-input"
+            label="Email"
+            type="email"
+            autoComplete="current-password"
+            variant="outlined"
+            name="email"
+          />
+          <br />
+          <TextField
+            id="outlined-password-input"
+            label="Password"
+            type="password"
+            autoComplete="current-password"
+            variant="outlined"
+            name="password"
+          />
+          <br />
+          <Button
+            variant="contained"
+            color="primary"
+            type="submit"
+            endIcon={<Icon>send</Icon>}
+          >
+            Sign up
+          </Button>
+        </form>
       </div>
     );
   }

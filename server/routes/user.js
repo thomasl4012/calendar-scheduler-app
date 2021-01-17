@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const UserModel = require("../models/User");
 
-
 router.get("/", (req, res, next) => {
   // Get all the users
   UserModel.find()
@@ -12,6 +11,16 @@ router.get("/", (req, res, next) => {
     .catch((error) => {
       next(error);
     });
+});
+
+router.get("/teams", (req, res, next) => {
+  UserModel.find()
+    .populate("team")
+    .then((userDocument) => {
+      console.log(userDocument);
+      res.status(201).json(userDocument);
+    })
+    .catch(next);
 });
 
 router.get("/:id", (req, res, next) => {
@@ -45,11 +54,12 @@ router.patch("/:id", (req, res, next) => {
   UserModel.findByIdAndUpdate(req.params.id, req.body, { new: true })
     .then((userDocument) => {
       res.status(200).json(userDocument);
-      
     })
     .catch((error) => {
       next(error);
     });
 });
+
+// Find users in team
 
 module.exports = router;

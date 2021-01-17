@@ -2,9 +2,9 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { withUser } from "../components/Auth/withUser";
 import apiHandler from "../api/apiHandler";
-import Signin from "./Dialogs/Signin"
-import Signup from "./Dialogs/Signup"
-import Teamcreate from "./Dialogs/Teamcreate"
+import Signin from "./Dialogs/Signin";
+import Signup from "./Dialogs/Signup";
+import Teamcreate from "./Dialogs/Teamcreate";
 import "../styles/NavMain.css";
 
 const NavMain = (props) => {
@@ -28,13 +28,13 @@ const NavMain = (props) => {
       </NavLink>
       <ul className="nav-list">
         {context.isLoggedIn && (
-          
           <React.Fragment>
-           <li>
-              <NavLink to="/user">Users</NavLink>
-            </li>
             <li>
-              <Teamcreate/>
+              <NavLink to="/user">Manage Users</NavLink>
+            </li>
+
+            <li>
+              <NavLink to="/team">Manage Teams</NavLink>
             </li>
             <li>
               <NavLink to="/profile">
@@ -48,12 +48,11 @@ const NavMain = (props) => {
         )}
         {!context.isLoggedIn && (
           <React.Fragment>
-         
             <li>
-              <Signin/>
+              <Signin />
             </li>
             <li>
-              <Signup/>
+              <Signup />
             </li>
           </React.Fragment>
         )}

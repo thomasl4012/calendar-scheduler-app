@@ -1,23 +1,24 @@
-import React, {useState, useEffect } from "react";
-import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TablePagination from '@material-ui/core/TablePagination';
-import TableRow from '@material-ui/core/TableRow';
-import TableSortLabel from '@material-ui/core/TableSortLabel';
-import Paper from '@material-ui/core/Paper';
-import IconButton from '@material-ui/core/IconButton';
-import UpdateIcon from '@material-ui/icons/Update';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Switch from '@material-ui/core/Switch';
-import DeleteIcon from '@material-ui/icons/Delete';
-import ApiHandler from '../api/apiHandler'
+import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+import { makeStyles } from "@material-ui/core/styles";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableContainer from "@material-ui/core/TableContainer";
+import TableHead from "@material-ui/core/TableHead";
+import TablePagination from "@material-ui/core/TablePagination";
+import TableRow from "@material-ui/core/TableRow";
+import TableSortLabel from "@material-ui/core/TableSortLabel";
+import Paper from "@material-ui/core/Paper";
+import IconButton from "@material-ui/core/IconButton";
+import UpdateIcon from "@material-ui/icons/Update";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Switch from "@material-ui/core/Switch";
+import DeleteIcon from "@material-ui/icons/Delete";
+import ApiHandler from "../api/apiHandler";
 import { Link } from "react-router-dom";
-import UserEdit from "../components/Dialogs/UserEdit"
+import UserEdit from "../components/Dialogs/UserEdit";
+import UserCreate from "../components/Dialogs/UserCreate";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -30,7 +31,7 @@ function descendingComparator(a, b, orderBy) {
 }
 
 function getComparator(order, orderBy) {
-  return order === 'desc'
+  return order === "desc"
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
@@ -46,12 +47,16 @@ function stableSort(array, comparator) {
 }
 
 const headCells = [
-  { id: 'firstName', numeric: false, disablePadding: true, label: 'First name' },
-  { id: 'lastName', numeric: false, disablePadding: false, label: 'Last name' },
-  { id: 'team', numeric: false, disablePadding: false, label: 'Team' },
-  { id: 'update', numeric: false, disablePadding: false, label: 'Update' },
-  { id: 'delete', numeric: false, disablePadding: false, label: 'Delete' },
-
+  {
+    id: "firstName",
+    numeric: false,
+    disablePadding: true,
+    label: "First name",
+  },
+  { id: "lastName", numeric: false, disablePadding: false, label: "Last name" },
+  { id: "team", numeric: false, disablePadding: false, label: "Team" },
+  { id: "update", numeric: false, disablePadding: false, label: "Update" },
+  { id: "delete", numeric: false, disablePadding: false, label: "Delete" },
 ];
 
 function EnhancedTableHead(props) {
@@ -63,23 +68,22 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
-        
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
             align="center"
-            padding={headCell.disablePadding ? 'none' : 'default'}
+            padding={headCell.disablePadding ? "none" : "default"}
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
               active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : 'asc'}
+              direction={orderBy === headCell.id ? order : "asc"}
               onClick={createSortHandler(headCell.id)}
             >
               {headCell.label}
               {orderBy === headCell.id ? (
                 <span className={classes.visuallyHidden}>
-                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                  {order === "desc" ? "sorted descending" : "sorted ascending"}
                 </span>
               ) : null}
             </TableSortLabel>
@@ -95,21 +99,17 @@ EnhancedTableHead.propTypes = {
   numSelected: PropTypes.number.isRequired,
   onRequestSort: PropTypes.func.isRequired,
   onSelectAllClick: PropTypes.func.isRequired,
-  order: PropTypes.oneOf(['asc', 'desc']).isRequired,
+  order: PropTypes.oneOf(["asc", "desc"]).isRequired,
   orderBy: PropTypes.string.isRequired,
   rowCount: PropTypes.number.isRequired,
 };
 
-
-
-
-
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: '100%',
+    width: "100%",
   },
   paper: {
-    width: '100%',
+    width: "100%",
     marginBottom: theme.spacing(2),
   },
   table: {
@@ -117,12 +117,12 @@ const useStyles = makeStyles((theme) => ({
   },
   visuallyHidden: {
     border: 0,
-    clip: 'rect(0 0 0 0)',
+    clip: "rect(0 0 0 0)",
     height: 1,
     margin: -1,
-    overflow: 'hidden',
+    overflow: "hidden",
     padding: 0,
-    position: 'absolute',
+    position: "absolute",
     top: 20,
     width: 1,
   },
@@ -131,30 +131,29 @@ const useStyles = makeStyles((theme) => ({
 export default function EnhancedTable() {
   const [data, setData] = useState([]);
 
-      useEffect(() => {
-        ApiHandler
-            .get("/api/user")
-            .then((apiResponse) => {
-                setData(apiResponse.data);
-            }).catch(function(error) {
-                console.log(error);
-            })
-        }, []);
+  useEffect(() => {
+    ApiHandler.get("/api/user")
+      .then((apiResponse) => {
+        console.log(apiResponse);
+        setData(apiResponse.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }, []);
 
-
-      
-  const rows = [...data]
+  const rows = [...data];
   const classes = useStyles();
-  const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('firstName');
+  const [order, setOrder] = React.useState("asc");
+  const [orderBy, setOrderBy] = React.useState("firstName");
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
 
@@ -162,28 +161,22 @@ export default function EnhancedTable() {
     if (event.target.checked) {
       const newSelecteds = rows.map((n) => n._id);
       setSelected(newSelecteds);
-      
 
-      return ;
+      return;
     }
     setSelected([]);
   };
 
- const  handleDelete = (userId) => {
-    ApiHandler
-      .removeUser(userId)
+  const handleDelete = (userId) => {
+    ApiHandler.removeUser(userId)
       .then((apiResponse) => {
-        const usersUpdated = data.filter(p => p._id !== userId);
-        setData(usersUpdated)
-       
+        const usersUpdated = data.filter((p) => p._id !== userId);
+        setData(usersUpdated);
       })
       .catch((error) => {
         console.log(error);
       });
   };
-  
-
-
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -198,19 +191,18 @@ export default function EnhancedTable() {
     setDense(event.target.checked);
   };
 
-
-
-  const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+  const emptyRows =
+    rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        
+        <UserCreate />
         <TableContainer>
           <Table
             className={classes.table}
             aria-labelledby="tableTitle"
-            size={dense ? 'small' : 'medium'}
+            size={dense ? "small" : "medium"}
             aria-label="enhanced table"
           >
             <EnhancedTableHead
@@ -226,31 +218,32 @@ export default function EnhancedTable() {
               {stableSort(rows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                 
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
-                    <TableRow
-                      
-                      key={row._id}
-                   
-                    >
-                      
-                      <TableCell align="center" component="th" id={labelId} scope="row" padding="none">
+                    <TableRow key={row._id}>
+                      <TableCell
+                        align="center"
+                        component="th"
+                        id={labelId}
+                        scope="row"
+                        padding="none"
+                      >
                         {row.firstName}
                       </TableCell>
                       <TableCell align="center">{row.lastName}</TableCell>
                       <TableCell align="center">{row.team}</TableCell>
-                        <TableCell align="center">  
-                        <UserEdit id = {row._id}/>
-
-                        </TableCell>
                       <TableCell align="center">
-                      <IconButton aria-label="delete" onClick={() => handleDelete(row._id)}>
-            <DeleteIcon  />
-          </IconButton>
-          </TableCell>
-                 
+                        <UserEdit id={row._id} />
+                      </TableCell>
+                      <TableCell align="center">
+                        <IconButton
+                          aria-label="delete"
+                          onClick={() => handleDelete(row._id)}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      </TableCell>
                     </TableRow>
                   );
                 })}
@@ -279,4 +272,3 @@ export default function EnhancedTable() {
     </div>
   );
 }
-

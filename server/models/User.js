@@ -6,14 +6,12 @@ const userSchema = new Schema({
   lastName: String,
   email: String,
   password: String,
-  team: [
-    { type: Schema.Types.ObjectId, ref: "team", default: [] },
-  ],
+  team: [{ type: Schema.Types.ObjectId, ref: "Team", default: [] }],
   role: {
     type: String,
     enum: ["admin", "user"],
-    default:"user",
-},
+    default: "user",
+  },
 });
 
 const User = mongoose.model("User", userSchema);

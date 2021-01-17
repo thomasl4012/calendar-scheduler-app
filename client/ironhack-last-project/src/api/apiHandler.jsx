@@ -46,17 +46,20 @@ export default {
   get(endPoint) {
     return this.service.get(endPoint);
   },
-   removeUser(userId) {
+  removeUser(userId) {
     return service
       .delete(`api/user/${userId}`)
       .then((res) => res.data)
       .catch(errorHandler);
   },
-   patch(endPoint, data) {
+  patch(endPoint, data) {
     return this.service.patch(endPoint, data);
   },
-   post(endPoint, data) {
+  post(endPoint, data) {
     return this.service.post(endPoint, data);
-  }
- 
+  },
+
+  delete(endPoint, data) {
+    return this.service.delete(endPoint, data);
+  },
 };

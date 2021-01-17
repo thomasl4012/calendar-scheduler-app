@@ -5,9 +5,9 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import FormTeamCreate from "../Forms/FormTeamCreate";
+import FormCreateUser from "../Forms/FormCreateUser";
 
-export default class Signin extends Component {
+export default class UserCreate extends Component {
   state = {
     open: false,
   };
@@ -22,19 +22,19 @@ export default class Signin extends Component {
     return (
       <div>
         <Button variant="contained" color="primary" onClick={this.handleToggle}>
-          Create a team
+          Create a user
         </Button>
         <Dialog
           open={open}
           onClose={this.handleToggle}
           aria-labelledby="form-dialog-title"
         >
-          <DialogTitle id="form-dialog-title">Team</DialogTitle>
+          <DialogTitle id="form-dialog-title">Create a user</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              Please fillup the form to create a team
+              Please fillup the from to create a user
             </DialogContentText>
-            <FormTeamCreate />
+            <FormCreateUser />
           </DialogContent>
           <DialogActions></DialogActions>
         </Dialog>
