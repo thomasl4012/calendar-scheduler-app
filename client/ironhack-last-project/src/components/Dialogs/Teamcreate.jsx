@@ -6,8 +6,9 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import FormTeamCreate from "../Forms/FormTeamCreate";
+import ApiHandler from "../../api/apiHandler";
 
-export default class Signin extends Component {
+export default class TeamCreate extends Component {
   state = {
     open: false,
   };
@@ -34,7 +35,10 @@ export default class Signin extends Component {
             <DialogContentText>
               Please fillup the form to create a team
             </DialogContentText>
-            <FormTeamCreate />
+            <FormTeamCreate
+              handleChange={this.props.handleChange}
+              handleSubmit={this.props.handleSubmit}
+            />
           </DialogContent>
           <DialogActions></DialogActions>
         </Dialog>

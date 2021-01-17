@@ -17,31 +17,6 @@ export default class AddUserToTeam extends Component {
     });
   };
 
-  handleSubmit = (event) => {
-    event.preventDefault();
-    const data = {
-      team_Id: this.state.team,
-      user_Id: this.state.user,
-    };
-    ApiHandler.post("/api/team/add", data)
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    this.setState({
-      open: false,
-    });
-  };
-
-  handleChange = (event) => {
-    const value = event.target.value;
-    const key = event.target.name;
-
-    this.setState({ [key]: value });
-  };
-
   render() {
     const { open } = this.state;
     return (
@@ -60,8 +35,8 @@ export default class AddUserToTeam extends Component {
               Please fillup the from to add a user to a team
             </DialogContentText>
             <FormAddUserToTeam
-              onChange={this.handleChange}
-              onSubmit={this.handleSubmit}
+              onChange={this.props.handleChange}
+              onSubmit={this.props.handleAddUserSubmit}
               dataFiltered={this.props.dataFiltered}
               data_team={this.props.dataTeam}
             />

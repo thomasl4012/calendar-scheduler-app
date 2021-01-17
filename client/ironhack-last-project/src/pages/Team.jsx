@@ -38,13 +38,17 @@ class Team extends React.Component {
       });
   }
 
+  addTeam = (team) => {
+    this.setState({ data_team: [...this.state.data_team, team] });
+  };
+
   render() {
     return (
       <div>
         <h1>Team Management Page</h1>
-        <Teamcreate />
+        <Teamcreate addTeam={this.addTeam} />
         <AddUserToTeam
-          dataFiltered={this.state.datafiltered}
+          dataFiltered={this.state.data_updated_team}
           dataTeam={this.state.data_team}
         />
         <TeamFetcher />

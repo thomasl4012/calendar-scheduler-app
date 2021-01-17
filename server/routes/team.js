@@ -41,10 +41,11 @@ router.post("/add", async (req, res, next) => {
     userModel.findByIdAndUpdate(req.body.user_Id, {
       $addToSet: { team: req.body.team_Id },
     }),
+    teamModel.find().populate("userId"),
   ])
-    .then(([team, user]) => {
-      res.status(201);
-      console.log(util.format("team=%O user=%O", team, user));
+    .then(([team, user, data]) => {
+      res.status(201).json(data);
+      console.log(data);
     })
     .catch(next);
 });

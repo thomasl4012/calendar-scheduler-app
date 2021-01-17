@@ -7,7 +7,7 @@ import Signup from "./pages/Signup";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Profile from "./pages/Profile";
 import User from "./pages/User";
-import Team from "./pages/Team";
+import Team2 from "./pages/Team2";
 import EditUser from "./pages/EditUser";
 
 function App() {
@@ -19,7 +19,7 @@ function App() {
         <Route exact path="/signin" component={Signin} />
         <Route exact path="/signup" component={Signup} />
         <Route exact path="/user" component={User} />
-        <Route exact path="/team" component={Team} />
+        <Route exact path="/team" component={Team2} />
         <Route exact path="/user/edit/:id" component={EditUser} />
         <ProtectedRoute exact path="/profile" component={Profile} />
       </Switch>
