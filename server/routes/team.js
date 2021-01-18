@@ -33,21 +33,26 @@ router.post("/", (req, res, next) => {
 
 router.post("/add", async (req, res, next) => {
   console.log(req.body);
-
-  Promise.all([
-    teamModel.findByIdAndUpdate(req.body.team_Id, {
-      $addToSet: { userId: req.body.user_Id },
-    }),
-    userModel.findByIdAndUpdate(req.body.user_Id, {
-      $addToSet: { team: req.body.team_Id },
-    }),
-    teamModel.find().populate("userId"),
-  ])
-    .then(([team, user, data]) => {
-      res.status(201).json(data);
-      console.log(data);
-    })
-    .catch(next);
+  try {
+    Promise.all([
+      teamModel.findByIdAndUpdate(req.body.team_Id, {
+        $addToSet: { userId: req.body.user_Id },
+      }),
+      userModel.findByIdAndUpdate(req.body.user_Id, {
+        $addToSet: { team: req.body.team_Id },
+      }),
+    ]).then(([team, user]) => {
+      teamModel
+        .find()
+        .populate("userId")
+        .then((data) => {
+          res.status(201).json(data);
+          console.log(data);
+        });
+    });
+  } catch (error) {
+    next(error);
+  }
 });
 
 // Find users in team

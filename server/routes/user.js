@@ -2,15 +2,16 @@ const express = require("express");
 const router = express.Router();
 const UserModel = require("../models/User");
 
-router.get("/", (req, res, next) => {
-  // Get all the users
-  UserModel.find()
-    .then((userDocument) => {
+router.get("/", async (req, res, next) => {
+  try {
+    // Get all the users
+    UserModel.find().then((userDocument) => {
       res.status(200).json(userDocument);
-    })
-    .catch((error) => {
-      next(error);
+      console.log(userDocument);
     });
+  } catch (error) {
+    next(error);
+  }
 });
 
 router.get("/teams", (req, res, next) => {
