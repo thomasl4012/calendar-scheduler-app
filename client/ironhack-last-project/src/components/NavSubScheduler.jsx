@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Button } from "@material-ui/core";
+import CreateEvent from "./Dialogs/CreateEvent";
 import "../styles/NavMain.css";
 
 const NavSubScheduler = (props) => {
@@ -9,7 +9,7 @@ const NavSubScheduler = (props) => {
       <ul className="nav-list-sub">
         <React.Fragment>
           <li>
-            <Button variant="contained">Add an Event</Button>
+            <CreateEvent />
           </li>
         </React.Fragment>
       </ul>

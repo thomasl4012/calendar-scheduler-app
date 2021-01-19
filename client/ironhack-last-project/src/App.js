@@ -10,6 +10,7 @@ import User from "./pages/User";
 import Team from "./pages/Team";
 import EditUser from "./pages/EditUser";
 import SchedulerView from "./pages/SchedulerView";
+import FormAddEvent from "./components/Forms/FormAddEvent";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route exact path="/signup" component={Signup} />
         <Route exact path="/user" component={User} />
         <Route exact path="/team" component={Team} />
+        <Route exact path="/test" component={FormAddEvent} />
         <Route exact path="/scheduler" component={SchedulerView} />
         <Route exact path="/user/edit/:id" component={EditUser} />
 

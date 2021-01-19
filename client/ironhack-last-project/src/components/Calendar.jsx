@@ -7,7 +7,7 @@ import resourceTimelinePlugin from "@fullcalendar/resource-timeline";
 import { INITIAL_EVENTS, createEventId } from "./event-utils";
 import ApiHandler from "../api/apiHandler";
 
-export default class SchedulerCalendar extends React.Component {
+export default class Calendar extends React.Component {
   state = {
     weekendsVisible: true,
     currentEvents: [],

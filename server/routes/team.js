@@ -9,6 +9,7 @@ router.get("/", (req, res, next) => {
     .find()
     .then((teamDocument) => {
       res.status(200).json(teamDocument);
+      console.log(teamDocument);
     })
     .catch((error) => {
       next(error);

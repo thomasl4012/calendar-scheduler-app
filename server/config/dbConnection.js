@@ -13,3 +13,10 @@ mongoose
   .catch((err) => {
     console.log(`An error occurred while connecting to the database...`);
   });
+mongoose.set("toJSON", {
+  virtuals: true,
+  transform: (doc, converted) => {
+    delete converted._id;
+    delete converted.__v;
+  },
+});

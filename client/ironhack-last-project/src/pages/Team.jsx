@@ -11,7 +11,6 @@ export default class Team extends Component {
   state = {
     datafiltered: [],
     data_team: [],
-    data_test: [],
   };
   componentDidMount() {
     //get all available team
@@ -136,12 +135,12 @@ export default class Team extends Component {
                   border: "1px solid",
                   padding: "30px",
                   borderRadius: "20px",
-                  borderColor: `${data.name.toLowerCase()}`,
+                  borderColor: `${data.title.toLowerCase()}`,
                 }}
               >
                 <h3>
                   <ul key={data.id} style={{ listStyleType: "none" }}>
-                    {data.name}{" "}
+                    {data.title}{" "}
                   </ul>
                 </h3>
                 {data.userId.map((element) => (

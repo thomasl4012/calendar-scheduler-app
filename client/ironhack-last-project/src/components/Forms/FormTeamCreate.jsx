@@ -1,11 +1,9 @@
 import React, { Component } from "react";
-import { withRouter, Redirect } from "react-router-dom";
-import { UserContext } from "../Auth/UserContext";
-import ApiHandler from "../../api/apiHandler";
+import { withRouter } from "react-router-dom";
+
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Icon from "@material-ui/core/Icon";
-import MenuItem from "@material-ui/core/MenuItem";
 
 class FormTeamCreate extends Component {
   render() {
@@ -21,7 +19,7 @@ class FormTeamCreate extends Component {
             type="text"
             autoComplete="current-password"
             variant="outlined"
-            name="name"
+            name="title"
           />
           <br />
 

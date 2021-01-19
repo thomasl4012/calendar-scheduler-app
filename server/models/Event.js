@@ -2,14 +2,15 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const eventSchema = new Schema({
-  name: String,
-  start_date: String,
-  end_date: String,
-  userId: [{ type: Schema.Types.ObjectId, ref: "userId" }],
+  title: String,
+  start: String,
+  end: String,
+  resourceId: [{ type: Schema.Types.ObjectId, ref: "resourceId" }],
   type: {
     type: String,
     enum: ["shift", "off", "oncall"],
   },
+  bgColor: { type: String, default: "" },
 });
 
 const Event = mongoose.model("Event", eventSchema);
