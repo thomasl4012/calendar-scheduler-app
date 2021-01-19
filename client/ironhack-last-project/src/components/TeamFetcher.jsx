@@ -24,7 +24,7 @@ export default class TeamFetcher extends Component {
   }
 
   handleDelete = (teamId) => {
-    const data = [...this.state.data].filter((item) => item._id !== teamId);
+    const data = [...this.state.data].filter((item) => item.id !== teamId);
     console.log(data);
     this.setState({ data });
     ApiHandler.delete(`/api/team/${teamId}`)
@@ -50,14 +50,14 @@ export default class TeamFetcher extends Component {
               }}
             >
               <h3>
-                <ul key={data._id} style={{ listStyleType: "none" }}>
+                <ul key={data.id} style={{ listStyleType: "none" }}>
                   {data.name}{" "}
                 </ul>
               </h3>
               {data.userId.map((element) => (
                 <li
-                  key={element._id}
-                  id={element._id}
+                  key={element.id}
+                  id={element.id}
                   style={{ listStyleType: "none" }}
                 >
                   {element.firstName}
@@ -68,7 +68,7 @@ export default class TeamFetcher extends Component {
               </IconButton>
               <IconButton
                 aria-label="delete"
-                onClick={() => this.handleDelete(data._id)}
+                onClick={() => this.handleDelete(data.id)}
               >
                 <DeleteIcon key={`delButton${index}`} />
               </IconButton>

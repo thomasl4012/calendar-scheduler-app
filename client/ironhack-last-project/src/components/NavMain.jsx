@@ -30,6 +30,9 @@ const NavMain = (props) => {
         {context.isLoggedIn && (
           <React.Fragment>
             <li>
+              <NavLink to="/scheduler">Scheduler</NavLink>
+            </li>
+            <li>
               <NavLink to="/user">Manage Users</NavLink>
             </li>
 

@@ -88,7 +88,7 @@ class FormCreateUser extends Component {
             {this.state.data.map((option) => (
               <MenuItem
                 key={option.name.toLowerCase()}
-                value={option._id.toLowerCase()}
+                value={option.name.toLowerCase()}
               >
                 {option.name}
               </MenuItem>

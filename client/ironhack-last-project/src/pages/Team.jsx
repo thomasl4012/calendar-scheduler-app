@@ -44,7 +44,7 @@ export default class Team extends Component {
   handleDelete = (teamId) => {
     // remove the card on the front logic
     const data_team = [...this.state.data_team].filter(
-      (item) => item._id !== teamId
+      (item) => item.id !== teamId
     );
     //Delete the team in the back
     this.setState({ data_team });
@@ -140,14 +140,14 @@ export default class Team extends Component {
                 }}
               >
                 <h3>
-                  <ul key={data._id} style={{ listStyleType: "none" }}>
+                  <ul key={data.id} style={{ listStyleType: "none" }}>
                     {data.name}{" "}
                   </ul>
                 </h3>
                 {data.userId.map((element) => (
                   <li
-                    key={element._id}
-                    id={element._id}
+                    key={element.id}
+                    id={element.id}
                     style={{ listStyleType: "none" }}
                   >
                     {element.firstName}
@@ -158,7 +158,7 @@ export default class Team extends Component {
                 </IconButton>
                 <IconButton
                   aria-label="delete"
-                  onClick={() => this.handleDelete(data._id)}
+                  onClick={() => this.handleDelete(data.id)}
                 >
                   <DeleteIcon key={`delButton${index}`} />
                 </IconButton>

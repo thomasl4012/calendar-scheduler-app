@@ -20,8 +20,8 @@ export default class FormAddUserToTeam extends Component {
           >
             {this.props.dataFiltered.map((option) => (
               <MenuItem
-                key={option._id.toLowerCase()}
-                value={option._id.toLowerCase()}
+                key={option.id.toLowerCase()}
+                value={option.id.toLowerCase()}
               >
                 {option.firstName} {option.lastName}
               </MenuItem>
@@ -39,7 +39,7 @@ export default class FormAddUserToTeam extends Component {
             {this.props.data_team.map((option) => (
               <MenuItem
                 key={option.name.toLowerCase()}
-                value={option._id.toLowerCase()}
+                value={option.id.toLowerCase()}
               >
                 {option.name}
               </MenuItem>

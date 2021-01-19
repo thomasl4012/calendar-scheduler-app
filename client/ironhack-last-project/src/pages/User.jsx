@@ -159,7 +159,7 @@ export default function EnhancedTable() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n._id);
+      const newSelecteds = rows.map((n) => n.id);
       setSelected(newSelecteds);
 
       return;
@@ -170,7 +170,7 @@ export default function EnhancedTable() {
   const handleDelete = (userId) => {
     ApiHandler.removeUser(userId)
       .then((apiResponse) => {
-        const usersUpdated = data.filter((p) => p._id !== userId);
+        const usersUpdated = data.filter((p) => p.id !== userId);
         setData(usersUpdated);
       })
       .catch((error) => {
@@ -221,7 +221,7 @@ export default function EnhancedTable() {
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
-                    <TableRow key={row._id}>
+                    <TableRow key={row.id}>
                       <TableCell
                         align="center"
                         component="th"
@@ -234,12 +234,12 @@ export default function EnhancedTable() {
                       <TableCell align="center">{row.lastName}</TableCell>
                       <TableCell align="center">{row.team}</TableCell>
                       <TableCell align="center">
-                        <UserEdit id={row._id} />
+                        <UserEdit id={row.id} />
                       </TableCell>
                       <TableCell align="center">
                         <IconButton
                           aria-label="delete"
-                          onClick={() => handleDelete(row._id)}
+                          onClick={() => handleDelete(row.id)}
                         >
                           <DeleteIcon />
                         </IconButton>
