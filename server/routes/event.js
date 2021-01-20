@@ -16,13 +16,14 @@ router.get("/", async (req, res, next) => {
 });
 
 router.post("/create", (req, res, next) => {
-  const { title, start, end, resourceId } = req.body;
+  const { title, start, end, resourceId, color } = req.body;
 
   const newEvent = {
     title,
     start,
     end,
     resourceId,
+    color
   };
 
   console.log(newEvent);
@@ -34,6 +35,21 @@ router.post("/create", (req, res, next) => {
       console.log(eventDocument);
     })
     .catch(next);
+});
+
+/// Update Events
+
+router.patch("/:id", (req, res, next) => {
+  // Update a specific user
+  console.log(req.body);
+  eventModel
+    .findByIdAndUpdate(req.params.id, req.body, { new: true })
+    .then((userDocument) => {
+      res.status(200).json(userDocument);
+    })
+    .catch((error) => {
+      next(error);
+    });
 });
 
 module.exports = router;

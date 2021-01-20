@@ -6,7 +6,7 @@ import interactionPlugin from "@fullcalendar/interaction";
 import resourceTimelinePlugin from "@fullcalendar/resource-timeline";
 import { INITIAL_EVENTS, createEventId } from "./event-utils";
 import ApiHandler from "../api/apiHandler";
-
+import EditEvent from "../components/Dialogs/EditEvent";
 export default class SchedulerCalendar extends React.Component {
   state = {
     weekendsVisible: true,
@@ -24,6 +24,32 @@ export default class SchedulerCalendar extends React.Component {
         resources: responseTeam.data,
       });
     });
+  }
+
+  handleUpdate(infos) {
+    if (
+      !window.confirm(
+        `Do you want to move the event here : ${infos.event.start} and affect it to this team : ${infos.newResource._resource.title}`
+      )
+    ) {
+      infos.revert();
+      console.log(infos);
+    } else {
+      console.log(infos);
+      ApiHandler.patch("/api/event/" + infos.event._def.publicId, {
+        title: infos.event.title,
+        start: infos.event.start,
+        end: infos.event.end,
+        resourceId: infos.newResource._resource.id,
+        color: infos.newResource._resource.title,
+      })
+        .then(() => {
+          window.location.reload();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   }
 
   render() {
@@ -69,7 +95,12 @@ export default class SchedulerCalendar extends React.Component {
               resources={this.state.resources} // alternatively, use the `events` setting to fetch from a feed
               select={this.handleDateSelect}
               eventContent={renderEventContent} // custom render function
-              eventClick={this.handleEventClick}
+              eventClick={(infos) => {
+                this.handleEventClick(infos);
+              }}
+              eventDrop={(infos) => {
+                this.handleUpdate(infos);
+              }}
               eventsSet={this.handleEvents} // called after events are initialized/added/changed/removed
               /* you can update a remote database when these fire:
             eventAdd={function(){}}
@@ -128,14 +159,8 @@ export default class SchedulerCalendar extends React.Component {
     }
   };
 
-  handleEventClick = (clickInfo) => {
-    if (
-      window.confirm()(
-        `Are you sure you want to delete the event '${clickInfo.event.title}'`
-      )
-    ) {
-      clickInfo.event.remove();
-    }
+  handleEventClick = (infos) => {
+    console.log(infos);
   };
 
   // handleEvents = (events) => {

@@ -12,6 +12,8 @@ class FormCreateUser extends Component {
 
   state = {
     data: [],
+    team: "",
+    color: "",
   };
   componentDidMount() {
     ApiHandler.get("/api/team")
@@ -36,6 +38,8 @@ class FormCreateUser extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
+
+    console.log(event.target.getAttribute("data-set"));
 
     ApiHandler.post("/api/user/create", this.state)
       .then((data) => {

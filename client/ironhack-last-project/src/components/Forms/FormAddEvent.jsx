@@ -28,6 +28,8 @@ export default class FormAddEvent extends Component {
   handleChange = (event) => {
     const value = event.target.value;
     const key = event.target.name;
+    const color = event.currentTarget.getAttribute("data-set");
+    this.setState({ color: color });
     this.setState({ [key]: value });
   };
 
@@ -45,6 +47,17 @@ export default class FormAddEvent extends Component {
         console.log(error);
       });
   }
+
+  handleHiddenData = () => {
+    const result = this.state.data_team.filter(
+      (e) => e.id === this.state.resourceId
+    );
+
+    console.log(result);
+    if (result.length > 0) {
+      this.setState({ color: result[0].title });
+    }
+  };
 
   handleHiddenField = () => {
     if (this.state.data_team.ressource_id != null) {
@@ -108,11 +121,13 @@ export default class FormAddEvent extends Component {
             variant="outlined"
             name="resourceId"
             onChange={this.handleChange}
+            onClick={this.handleHiddenData}
           >
             {this.state.data_team.map((option) => (
               <MenuItem
                 key={option.title.toLowerCase()}
                 value={option.id.toLowerCase()}
+                data-set={option.title}
               >
                 {option.title}
               </MenuItem>

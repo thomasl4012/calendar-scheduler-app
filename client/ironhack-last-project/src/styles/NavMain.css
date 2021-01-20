@@ -13,6 +13,23 @@
   display: flex;
 }
 
+.NavMain .nav-list {
+  margin-left: auto;
+  display: flex;
+}
+
+.nav-list-sub {
+  color: rgb(57, 57, 57);
+  display: flex;
+  align-items: center;
+  margin-bottom: 25px;
+  padding: 20px;
+  height: 70px;
+  margin-left: auto;
+  display: flex;
+  justify-content: center;
+}
+
 .NavMain .nav-list li:not(:last-child) {
   margin-right: 20px;
 }
