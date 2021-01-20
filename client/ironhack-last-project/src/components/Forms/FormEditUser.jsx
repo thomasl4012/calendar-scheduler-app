@@ -100,7 +100,7 @@ class FormEditUser extends React.Component {
         <br />
         <TextField
           id="standard-basic"
-          label="email"
+          label="Last name"
           type="text"
           InputLabelProps={{ shrink: true }}
           variant="outlined"

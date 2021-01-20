@@ -177,6 +177,15 @@ export default function EnhancedTable() {
       .catch((error) => {
         console.log(error);
       });
+
+    ApiHandler.get("/api/user/teams")
+      .then((apiResponse) => {
+        console.log("coucou ==>", apiResponse);
+        setData(apiResponse.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 
   const handleChangePage = (event, newPage) => {
@@ -235,10 +244,15 @@ export default function EnhancedTable() {
                       <TableCell align="center">{row.lastName}</TableCell>
                       <TableCell align="center">{row.email}</TableCell>
                       <TableCell
-                        style={{ color: `${row.team[0].title.toLowerCase()}` }}
+                        style={{
+                          color:
+                            row.team.length != 0
+                              ? row.team[0].title.toLowerCase()
+                              : "black",
+                        }}
                         align="center"
                       >
-                        {row.team[0].title}
+                        {row.team.length != 0 ? row.team[0].title : "No team"}
                       </TableCell>
                       <TableCell align="center">
                         <UserEdit id={row.id} />

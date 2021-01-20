@@ -15,72 +15,69 @@ export default class SchedulerCalendar extends React.Component {
   };
 
   componentDidMount() {
-    ApiHandler.get("/api/team")
-      .then((apiResponse) => {
-        const data_team = apiResponse.data;
-        console.log(data_team);
-        this.setState({
-          resources: data_team,
-        });
-      })
-      .catch((error) => {
-        console.log(error);
+    Promise.all([
+      ApiHandler.get("/api/team"),
+      ApiHandler.get("/api/event"),
+    ]).then(([responseTeam, responseEvent]) => {
+      this.setState({
+        currentEvents: responseEvent.data,
+        resources: responseTeam.data,
       });
-
-    ApiHandler.get("/api/event")
-      .then((apiResponse) => {
-        const currentEvents = apiResponse.data;
-        console.log(currentEvents);
-        this.setState({
-          currentEvents,
-        });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    });
   }
 
   render() {
+    console.log("resourcees ==>", this.state.resources);
+    console.log("INITAL VIEWS ==>", INITIAL_EVENTS);
+    console.log("STATE ==>", this.state.currentEvents);
+    if (this.state.currentEvents[0]?.id) {
+      console.log(
+        this.state.currentEvents[0]?.resourceId === this.state.resources[1]?.id
+      );
+    }
+
     return (
       <div>
         {this.renderSidebar()}
         <div>
-          <FullCalendar
-            plugins={[
-              dayGridPlugin,
-              timeGridPlugin,
-              interactionPlugin,
-              resourceTimelinePlugin,
-            ]}
-            headerToolbar={{
-              left: "prev,next today",
-              center: "title",
-              right:
-                "resourceTimelineDay,resourceTimelineWeek,resourceTimelineMonth",
-            }}
-            customButtons={{
-              text: "add a team",
-            }}
-            initialView="resourceTimeline"
-            editable={true}
-            nowIndicator={true}
-            selectable={true}
-            selectMirror={true}
-            dayMaxEvents={true}
-            schedulerLicenseKey={"CC-Attribution-NonCommercial-NoDerivatives"}
-            weekends={this.state.weekendsVisible}
-            initialEvents={this.state.currentEvents}
-            resources={this.state.resources} // alternatively, use the `events` setting to fetch from a feed
-            select={this.handleDateSelect}
-            eventContent={renderEventContent} // custom render function
-            eventClick={this.handleEventClick}
-            eventsSet={this.handleEvents} // called after events are initialized/added/changed/removed
-            /* you can update a remote database when these fire:
+          {this.state.resources.length && (
+            <FullCalendar
+              plugins={[
+                dayGridPlugin,
+                timeGridPlugin,
+                interactionPlugin,
+                resourceTimelinePlugin,
+              ]}
+              headerToolbar={{
+                left: "prev,next today",
+                center: "title",
+                right:
+                  "resourceTimelineDay,resourceTimelineWeek,resourceTimelineMonth",
+              }}
+              customButtons={{
+                text: "add a team",
+              }}
+              initialView="resourceTimeline"
+              editable={true}
+              nowIndicator={true}
+              selectable={true}
+              selectMirror={true}
+              dayMaxEvents={true}
+              schedulerLicenseKey={"CC-Attribution-NonCommercial-NoDerivatives"}
+              weekends={this.state.weekendsVisible}
+              initialEvents={this.state.currentEvents}
+              resources={this.state.resources} // alternatively, use the `events` setting to fetch from a feed
+              select={this.handleDateSelect}
+              eventContent={renderEventContent} // custom render function
+              eventClick={this.handleEventClick}
+              eventsSet={this.handleEvents} // called after events are initialized/added/changed/removed
+              /* you can update a remote database when these fire:
             eventAdd={function(){}}
             eventChange={function(){}}
             eventRemove={function(){}}
             */
-          />
+            />
+          )}
         </div>
       </div>
     );
@@ -89,14 +86,7 @@ export default class SchedulerCalendar extends React.Component {
   renderSidebar() {
     return (
       <div className="demo-app-sidebar">
-        <div className="demo-app-sidebar-section">
-          <h2>Instructions</h2>
-          <ul>
-            <li>Select dates and you will be prompted to create a new event</li>
-            <li>Drag, drop, and resize events</li>
-            <li>Click an event to delete it</li>
-          </ul>
-        </div>
+        <div className="demo-app-sidebar-section"></div>
         <div className="demo-app-sidebar-section">
           <label>
             <input
