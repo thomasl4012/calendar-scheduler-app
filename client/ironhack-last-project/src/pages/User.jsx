@@ -11,12 +11,10 @@ import TableRow from "@material-ui/core/TableRow";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Paper from "@material-ui/core/Paper";
 import IconButton from "@material-ui/core/IconButton";
-
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import DeleteIcon from "@material-ui/icons/Delete";
 import ApiHandler from "../api/apiHandler";
-import { Link } from "react-router-dom";
 import UserEdit from "../components/Dialogs/UserEdit";
 import UserCreate from "../components/Dialogs/UserCreate";
 
@@ -246,13 +244,13 @@ export default function EnhancedTable() {
                       <TableCell
                         style={{
                           color:
-                            row.team.length != 0
+                            row.team.length !== 0
                               ? row.team[0].title.toLowerCase()
                               : "black",
                         }}
                         align="center"
                       >
-                        {row.team.length != 0 ? row.team[0].title : "No team"}
+                        {row.team.length !== 0 ? row.team[0].title : "No team"}
                       </TableCell>
                       <TableCell align="center">
                         <UserEdit id={row.id} />

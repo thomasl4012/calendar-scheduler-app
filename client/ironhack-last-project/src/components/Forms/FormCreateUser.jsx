@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { withRouter, Redirect } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import { UserContext } from "../Auth/UserContext";
 import ApiHandler from "../../api/apiHandler";
 import Button from "@material-ui/core/Button";

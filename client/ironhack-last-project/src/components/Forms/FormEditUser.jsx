@@ -3,23 +3,6 @@ import ApiHandler from "../../api/apiHandler";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Icon from "@material-ui/core/Icon";
-import MenuItem from "@material-ui/core/MenuItem";
-import FilledInput from "@material-ui/core/FilledInput";
-
-const team = [
-  {
-    value: "red",
-    label: "Red",
-  },
-  {
-    value: "blue",
-    label: "Blue",
-  },
-  {
-    value: "yellow",
-    label: "Yellow",
-  },
-];
 
 class FormEditUser extends React.Component {
   state = {};
