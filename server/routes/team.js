@@ -3,6 +3,7 @@ const router = express.Router();
 const teamModel = require("../models/Team");
 const userModel = require("../models/User");
 const util = require("util");
+
 router.get("/", (req, res, next) => {
   // Get all the team
   teamModel

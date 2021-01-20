@@ -29,7 +29,7 @@ app.use(
     secret: process.env.SESSION_SECRET,
     resave: true,
     saveUninitialized: true,
-    secret: 'somevalue' 
+    secret: "somevalue",
   })
 );
 
@@ -55,6 +55,9 @@ const teamRouter = require("./routes/team");
 
 app.use("/api/team", teamRouter);
 
+const eventRouter = require("./routes/event");
+
+app.use("/api/event", eventRouter);
 
 // 404 Middleware
 app.use((req, res, next) => {

@@ -6,6 +6,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import AddUserToTeam from "../components/Dialogs/AddUserToTeam";
 import Teamcreate from "../components/Dialogs/Teamcreate";
 import axios from "axios";
+import SearchBar from "../components/SearchBar";
 
 export default class Team extends Component {
   state = {
@@ -89,6 +90,18 @@ export default class Team extends Component {
       });
   };
 
+  handleSearch = (event) => {
+    const value = event.target.value;
+    let filteredList = [];
+    filteredList = [...this.state.data_team].filter((e) => {
+      return e.title.toLowerCase().includes(value.toLowerCase());
+    });
+
+    this.setState({
+      data_team: filteredList,
+    });
+  };
+
   TeamCreateSubmit = (event) => {
     event.preventDefault();
     console.log(this.state);
@@ -113,19 +126,38 @@ export default class Team extends Component {
     return (
       <div>
         <h1>Team Management Page</h1>
-        <Teamcreate
-          addTeam={this.addTeam}
-          handleChange={this.handleChange}
-          handleSubmit={this.TeamCreateSubmit}
-        ></Teamcreate>
-        <AddUserToTeam
-          dataFiltered={this.state.datafiltered}
-          dataTeam={this.state.data_team}
-          addUser={this.addUser}
-          UpdateUser={this.UpdateUser}
-          handleAddUserSubmit={this.AddUserSubmit}
-          handleChange={this.handleChange}
-        />
+        <div>
+          <ul
+            style={{
+              display: "flex",
+              margin: "10px",
+              justifyContent: "center",
+            }}
+          >
+            <React.Fragment>
+              <li style={{ margin: "10px" }}>
+                <Teamcreate
+                  addTeam={this.addTeam}
+                  handleChange={this.handleChange}
+                  handleSubmit={this.TeamCreateSubmit}
+                ></Teamcreate>
+              </li>
+              <li style={{ margin: "10px" }}>
+                <AddUserToTeam
+                  dataFiltered={this.state.datafiltered}
+                  dataTeam={this.state.data_team}
+                  addUser={this.addUser}
+                  UpdateUser={this.UpdateUser}
+                  handleAddUserSubmit={this.AddUserSubmit}
+                  handleChange={this.handleChange}
+                />
+              </li>
+              <li>
+                <SearchBar onSearch={this.handleSearch} />
+              </li>
+            </React.Fragment>
+          </ul>
+        </div>
         <div style={{ display: "flex", justifyContent: "space-around" }}>
           {this.state.data_team.map((data, index) => (
             <React.Fragment>
@@ -133,7 +165,9 @@ export default class Team extends Component {
                 style={{
                   marginTop: "40px",
                   border: "1px solid",
-                  padding: "30px",
+                  paddingTop: "25px",
+                  paddingLeft: "30px",
+                  paddingRight: "30px",
                   borderRadius: "20px",
                   borderColor: `${data.title.toLowerCase()}`,
                 }}

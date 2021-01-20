@@ -37,7 +37,7 @@ class FormCreateUser extends Component {
   handleSubmit = (event) => {
     event.preventDefault();
 
-    ApiHandler.signup(this.state)
+    ApiHandler.post("/api/user/create", this.state)
       .then((data) => {
         console.log(data);
       })
@@ -87,24 +87,16 @@ class FormCreateUser extends Component {
           >
             {this.state.data.map((option) => (
               <MenuItem
-                key={option.name.toLowerCase()}
-                value={option.name.toLowerCase()}
+                key={option.title.toLowerCase()}
+                value={option.id.toLowerCase()}
               >
-                {option.name}
+                {option.title}
               </MenuItem>
             ))}
           </TextField>
 
           <br />
-          <TextField
-            id="outlined-password-input"
-            label="Password"
-            type="password"
-            autoComplete="current-password"
-            variant="outlined"
-            name="password"
-          />
-          <br />
+
           <Button
             variant="contained"
             color="primary"

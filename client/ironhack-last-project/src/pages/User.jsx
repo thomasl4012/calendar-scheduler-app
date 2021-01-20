@@ -11,7 +11,7 @@ import TableRow from "@material-ui/core/TableRow";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Paper from "@material-ui/core/Paper";
 import IconButton from "@material-ui/core/IconButton";
-import UpdateIcon from "@material-ui/icons/Update";
+
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -54,6 +54,7 @@ const headCells = [
     label: "First name",
   },
   { id: "lastName", numeric: false, disablePadding: false, label: "Last name" },
+  { id: "email", numeric: false, disablePadding: false, label: "Email" },
   { id: "team", numeric: false, disablePadding: false, label: "Team" },
   { id: "update", numeric: false, disablePadding: false, label: "Update" },
   { id: "delete", numeric: false, disablePadding: false, label: "Delete" },
@@ -132,7 +133,7 @@ export default function EnhancedTable() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    ApiHandler.get("/api/user")
+    ApiHandler.get("/api/user/teams")
       .then((apiResponse) => {
         console.log(apiResponse);
         setData(apiResponse.data);
@@ -232,7 +233,13 @@ export default function EnhancedTable() {
                         {row.firstName}
                       </TableCell>
                       <TableCell align="center">{row.lastName}</TableCell>
-                      <TableCell align="center">{row.team}</TableCell>
+                      <TableCell align="center">{row.email}</TableCell>
+                      <TableCell
+                        style={{ color: `${row.team[0].title.toLowerCase()}` }}
+                        align="center"
+                      >
+                        {row.team[0].title}
+                      </TableCell>
                       <TableCell align="center">
                         <UserEdit id={row.id} />
                       </TableCell>

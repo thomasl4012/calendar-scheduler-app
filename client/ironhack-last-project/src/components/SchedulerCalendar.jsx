@@ -26,13 +26,25 @@ export default class SchedulerCalendar extends React.Component {
       .catch((error) => {
         console.log(error);
       });
+
+    ApiHandler.get("/api/event")
+      .then((apiResponse) => {
+        const currentEvents = apiResponse.data;
+        console.log(currentEvents);
+        this.setState({
+          currentEvents,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   render() {
     return (
-      <div className="demo-app">
+      <div>
         {this.renderSidebar()}
-        <div className="demo-app-main">
+        <div>
           <FullCalendar
             plugins={[
               dayGridPlugin,
@@ -43,7 +55,8 @@ export default class SchedulerCalendar extends React.Component {
             headerToolbar={{
               left: "prev,next today",
               center: "title",
-              right: "resourceTimelineDay,resourceTimelineWeek",
+              right:
+                "resourceTimelineDay,resourceTimelineWeek,resourceTimelineMonth",
             }}
             customButtons={{
               text: "add a team",
@@ -54,8 +67,9 @@ export default class SchedulerCalendar extends React.Component {
             selectable={true}
             selectMirror={true}
             dayMaxEvents={true}
+            schedulerLicenseKey={"CC-Attribution-NonCommercial-NoDerivatives"}
             weekends={this.state.weekendsVisible}
-            initialEvents={INITIAL_EVENTS}
+            initialEvents={this.state.currentEvents}
             resources={this.state.resources} // alternatively, use the `events` setting to fetch from a feed
             select={this.handleDateSelect}
             eventContent={renderEventContent} // custom render function
@@ -134,11 +148,11 @@ export default class SchedulerCalendar extends React.Component {
     }
   };
 
-  handleEvents = (events) => {
-    this.setState({
-      currentEvents: events,
-    });
-  };
+  // handleEvents = (events) => {
+  //   this.setState({
+  //     currentEvents: events,
+  //   });
+  // };
 }
 
 function renderEventContent(eventInfo) {

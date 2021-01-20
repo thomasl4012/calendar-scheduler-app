@@ -6,7 +6,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import FormAddUserToTeam from "../Forms/FormAddUserToTeam";
-import ApiHandler from "../../api/apiHandler";
+
 export default class AddUserToTeam extends Component {
   state = {
     open: false,

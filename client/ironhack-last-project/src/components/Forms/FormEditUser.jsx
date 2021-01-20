@@ -1,42 +1,40 @@
 import React from "react";
 import ApiHandler from "../../api/apiHandler";
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Icon from '@material-ui/core/Icon';
-import MenuItem from '@material-ui/core/MenuItem';
-import FilledInput from '@material-ui/core/FilledInput';
+import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
+import Icon from "@material-ui/core/Icon";
+import MenuItem from "@material-ui/core/MenuItem";
+import FilledInput from "@material-ui/core/FilledInput";
 
 const team = [
   {
-    value: 'red',
-    label: 'Red',
+    value: "red",
+    label: "Red",
   },
   {
-    value: 'blue',
-    label: 'Blue',
+    value: "blue",
+    label: "Blue",
   },
   {
-    value: 'yellow',
-    label: 'Yellow',
+    value: "yellow",
+    label: "Yellow",
   },
 ];
 
 class FormEditUser extends React.Component {
   state = {};
- 
+
   componentDidMount() {
-      
     const userId = this.props.id;
 
-    ApiHandler
-      .get("/api/user/" + userId)
+    ApiHandler.get("/api/user/" + userId)
       .then((apiResponse) => {
-          console.log(apiResponse);
+        console.log(apiResponse);
         const user = apiResponse.data;
         this.setState({
           firstName: user.firstName,
           lastName: user.lastName,
-          team: user.team,
+          email: user.email,
         });
       })
       .catch((error) => {
@@ -57,14 +55,13 @@ class FormEditUser extends React.Component {
 
     const userId = this.props.id;
 
-    ApiHandler
-      .patch("/api/user/" + userId, {
-       firstName: this.state.firstName,
-       lastName: this.state.lastName,
-       team: this.state.team,
-      })
+    ApiHandler.patch("/api/user/" + userId, {
+      firstName: this.state.firstName,
+      lastName: this.state.lastName,
+      team: this.state.team,
+    })
       .then(() => {
-       window.location.reload()
+        window.location.reload();
       })
       .catch((err) => {
         console.log(err);
@@ -74,8 +71,8 @@ class FormEditUser extends React.Component {
   render() {
     return (
       <form onChange={this.handleChange} onSubmit={this.handleSubmit}>
-        <h2 style={{marginBottom:"30px"}}>Edit a user </h2>
-  <TextField
+        <h2 style={{ marginBottom: "30px" }}>Edit a user </h2>
+        <TextField
           id="standard-basic"
           label="First Name"
           type="text"
@@ -83,9 +80,12 @@ class FormEditUser extends React.Component {
           variant="outlined"
           name="firstName"
           value={this.state.firstName}
-        > {this.state.firstName}</TextField>
-        <br/>
-     <TextField
+        >
+          {" "}
+          {this.state.firstName}
+        </TextField>
+        <br />
+        <TextField
           id="standard-basic"
           label="Last name"
           type="text"
@@ -93,38 +93,32 @@ class FormEditUser extends React.Component {
           variant="outlined"
           name="lastName"
           value={this.state.lastName}
-        > {this.state.lastName}</TextField>
-        <br/>
-       <TextField
-       id="outlined-select-currency"
-          label="Choose your team"
-          select
+        >
+          {" "}
+          {this.state.lastName}
+        </TextField>
+        <br />
+        <TextField
+          id="standard-basic"
+          label="email"
+          type="text"
           InputLabelProps={{ shrink: true }}
           variant="outlined"
-          name="team"
-          value={this.state.team}
-           onChange={this.handleChange}
-          
-
+          name="lastName"
+          value={this.state.email}
         >
-        {team.map((option) => (
-            <MenuItem key={option.value} value={option.value}>
-              {option.label}
-            </MenuItem>
-          ))}
-
-</TextField>
-<br/>
-          <Button
-        variant="contained"
-        color="primary"
-        type="submit"
-        
-        endIcon={<Icon>send</Icon>}
-       
-      >
-       Update
-      </Button>
+          {" "}
+          {this.state.email}
+        </TextField>
+        <br />
+        <Button
+          variant="contained"
+          color="primary"
+          type="submit"
+          endIcon={<Icon>send</Icon>}
+        >
+          Update
+        </Button>
       </form>
     );
   }
