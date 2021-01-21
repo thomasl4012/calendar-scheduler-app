@@ -19,6 +19,7 @@ export default class FormAddEvent extends Component {
       .then((data) => {
         console.log(data.data);
         this.setState({ data_team: [...this.state.data_team, data.data] });
+        window.location.reload();
       })
       .catch((error) => {
         console.log(error);
@@ -48,32 +49,9 @@ export default class FormAddEvent extends Component {
       });
   }
 
-  handleHiddenData = () => {
-    const result = this.state.data_team.filter(
-      (e) => e.id === this.state.resourceId
-    );
-
-    console.log(result);
-    if (result.length > 0) {
-      this.setState({ color: result[0].title });
-    }
-  };
-
-  handleHiddenField = () => {
-    if (this.state.data_team.ressource_id != null) {
-      return this.state.data_team.map((option) => (
-        <input
-          id="prodId"
-          name="color"
-          type="hidden"
-          onChange={this.handleChange}
-          value={option.title.toLowerCase()}
-        ></input>
-      ));
-    }
-  };
-
   render() {
+    const CurrentDate = moment().format("MM-DD-YYYY");
+    console.log(CurrentDate);
     return (
       <div>
         <form onChange={this.handleChange} onSubmit={this.handleSubmit}>
@@ -93,7 +71,7 @@ export default class FormAddEvent extends Component {
             type="datetime-local"
             name="start"
             onChange={this.handleChange}
-            defaultValue={moment()}
+            defaultValue={CurrentDate}
             InputLabelProps={{
               shrink: true,
             }}
@@ -105,7 +83,7 @@ export default class FormAddEvent extends Component {
             name="end"
             type="datetime-local"
             onChange={this.handleChange}
-            defaultValue={moment()}
+            defaultValue={CurrentDate}
             InputLabelProps={{
               shrink: true,
             }}

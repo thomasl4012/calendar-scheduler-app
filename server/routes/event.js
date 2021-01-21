@@ -23,7 +23,7 @@ router.post("/create", (req, res, next) => {
     start,
     end,
     resourceId,
-    color
+    color,
   };
 
   console.log(newEvent);
@@ -47,6 +47,19 @@ router.patch("/:id", (req, res, next) => {
     .then((userDocument) => {
       res.status(200).json(userDocument);
     })
+    .catch((error) => {
+      next(error);
+    });
+});
+
+/// Delete event
+router.delete("/:id", (req, res, next) => {
+  eventModel
+    .findByIdAndRemove(req.params.id)
+    .then((eventDocument) => {
+      res.status(201).json(eventDocument);
+    })
+
     .catch((error) => {
       next(error);
     });

@@ -14,7 +14,24 @@ class FormCreateUser extends Component {
     data: [],
     team: "",
     color: "",
+    firstName: " ",
+    lastName: "",
+    email: "",
+    errors: {},
   };
+
+  validate = () => {
+    const errors = {};
+
+    if (this.state.firstName.trim() === "")
+      errors.firstName = "First name is required";
+
+    if (this.state.lastName.trim() === "")
+      errors.lastName = "Last name is required";
+
+    return Object.keys(errors).length === 0 ? null : errors;
+  };
+
   componentDidMount() {
     ApiHandler.get("/api/team")
       .then((apiResponse) => {
@@ -29,18 +46,34 @@ class FormCreateUser extends Component {
       });
   }
 
+  validateProperty = ({ name, value }) => {
+    if (name === "firstName") {
+      if (value.trim() === "") return "First name is required";
+    }
+    if (name === "lastName") {
+      if (value.trim() === "") return "Last name  is required";
+    }
+  };
+
   handleChange = (event) => {
+    const errors = { ...this.state.errors };
+    const errorMessage = this.validateProperty(event.target);
+    if (errorMessage) errors[event.target.name] = errorMessage;
+    else delete errors[event.target.name];
     const value = event.target.value;
     const key = event.target.name;
 
-    this.setState({ [key]: value });
+    this.setState({ [key]: value, errors });
   };
 
   handleSubmit = (event) => {
     event.preventDefault();
 
-    console.log(event.target.getAttribute("data-set"));
+    const errors = this.validate();
+    console.log(errors);
+    this.setState({ errors: errors || {} });
 
+    if (errors) return;
     ApiHandler.post("/api/user/create", this.state)
       .then((data) => {
         console.log(data);
@@ -52,6 +85,8 @@ class FormCreateUser extends Component {
   };
 
   render() {
+    const { errors } = this.state;
+
     return (
       <div>
         <form onChange={this.handleChange} onSubmit={this.handleSubmit}>
@@ -62,7 +97,16 @@ class FormCreateUser extends Component {
             autoComplete="current-password"
             variant="outlined"
             name="firstName"
+            {...(errors &
+              {
+                error: true,
+                label: errors.firstName,
+                variant: "outlined",
+                id: "outlined-error-helper-text",
+                defaultValue: errors.firstName,
+              })}
           />
+
           <br />
           <TextField
             id="outlined-text-input"
@@ -71,6 +115,13 @@ class FormCreateUser extends Component {
             autoComplete="current-password"
             variant="outlined"
             name="lastName"
+            {...(errors && {
+              error: true,
+              label: errors.lastName,
+              variant: "outlined",
+              id: "outlined-error-helper-text",
+              defaultValue: errors.firstName,
+            })}
           />
           <br />
           <TextField

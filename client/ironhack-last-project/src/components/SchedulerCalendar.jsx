@@ -6,12 +6,28 @@ import interactionPlugin from "@fullcalendar/interaction";
 import resourceTimelinePlugin from "@fullcalendar/resource-timeline";
 import { INITIAL_EVENTS, createEventId } from "./event-utils";
 import ApiHandler from "../api/apiHandler";
-import EditEvent from "../components/Dialogs/EditEvent";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import FormAddEvent from "./Forms/FormAddEvent";
+import FormEditEvents from "./Forms/FormEditEvents";
+
 export default class SchedulerCalendar extends React.Component {
   state = {
+    open: false,
     weekendsVisible: true,
     currentEvents: [],
     resources: [],
+    event: [],
+    eventId: "",
+  };
+
+  handleToggle = () => {
+    this.setState({
+      open: !this.state.open,
+    });
   };
 
   componentDidMount() {
@@ -29,7 +45,9 @@ export default class SchedulerCalendar extends React.Component {
   handleUpdate(infos) {
     if (
       !window.confirm(
-        `Do you want to move the event here : ${infos.event.start} and affect it to this team : ${infos.newResource._resource.title}`
+        `Do you want to move the event here : ${infos.event.start.toISOString()} and affect it to this team : ${
+          infos.newResource._resource.title
+        }`
       )
     ) {
       infos.revert();
@@ -52,7 +70,75 @@ export default class SchedulerCalendar extends React.Component {
     }
   }
 
+  handleChange = (event) => {
+    const name = event.target.name;
+    const value = event.target.value;
+    const color = event.currentTarget.getAttribute("data-set");
+    this.setState({
+      [name]: value,
+      color,
+    });
+  };
+
+  handleSubmit = (event) => {
+    event.preventDefault();
+
+    ApiHandler.patch("/api/event/" + this.state.eventId, {
+      title: this.state.title,
+      start: this.state.start,
+      end: this.state.end,
+      resourceId: this.state.resourceId,
+      color: this.state.color,
+    })
+      .then(() => {
+        window.location.reload();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  handleDelete = () => {
+    ApiHandler.delete("api/event/" + this.state.eventId)
+      .then((apiResponse) => {
+        window.location.reload();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  handleResize(info) {
+    console.log(info);
+    if (
+      !window.confirm(
+        `Do you want to resize ${
+          info.event.title
+        } starting from : ${info.event.start.toISOString()} and ending to : ${info.event.end.toISOString()}`
+      )
+    ) {
+      info.revert();
+      console.log(info);
+    } else {
+      console.log(info);
+      ApiHandler.patch("/api/event/" + info.event._def.publicId, {
+        title: info.event.title,
+        start: info.event.start,
+        end: info.event.end,
+        resourceId: info.event._def.resourceIds[0],
+        color: info.event.backgroundColor,
+      })
+        .then(() => {
+          window.location.reload();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }
+
   render() {
+    const { open } = this.state;
     console.log("resourcees ==>", this.state.resources);
     console.log("INITAL VIEWS ==>", INITIAL_EVENTS);
     console.log("STATE ==>", this.state.currentEvents);
@@ -64,7 +150,6 @@ export default class SchedulerCalendar extends React.Component {
 
     return (
       <div>
-        {this.renderSidebar()}
         <div>
           {this.state.resources.length && (
             <FullCalendar
@@ -80,13 +165,13 @@ export default class SchedulerCalendar extends React.Component {
                 right:
                   "resourceTimelineDay,resourceTimelineWeek,resourceTimelineMonth",
               }}
-              customButtons={{
-                text: "add a team",
-              }}
               initialView="resourceTimeline"
               editable={true}
               nowIndicator={true}
+              height={"auto"}
               selectable={true}
+              eventDurationEditable={true}
+              eventResizableFromStart={true}
               selectMirror={true}
               dayMaxEvents={true}
               schedulerLicenseKey={"CC-Attribution-NonCommercial-NoDerivatives"}
@@ -97,6 +182,9 @@ export default class SchedulerCalendar extends React.Component {
               eventContent={renderEventContent} // custom render function
               eventClick={(infos) => {
                 this.handleEventClick(infos);
+              }}
+              eventResize={(info) => {
+                this.handleResize(info);
               }}
               eventDrop={(infos) => {
                 this.handleUpdate(infos);
@@ -110,6 +198,37 @@ export default class SchedulerCalendar extends React.Component {
             />
           )}
         </div>
+        <div>{this.renderSidebar()}</div>
+        <Dialog
+          open={open}
+          onClose={this.handleToggle}
+          aria-labelledby="form-dialog-title"
+        >
+          <DialogTitle id="form-dialog-title">
+            Edit or delete this event
+          </DialogTitle>
+          <DialogContent>
+            <FormEditEvents
+              open={this.state.open}
+              onChange={this.handleChange}
+              onSubmit={this.handleSubmit}
+              handleDelete={this.handleDelete}
+              title={open && this.state.event.event._def.title}
+              start={
+                open &&
+                this.state.event.event._instance.range.start.toISOString()
+              }
+              end={
+                open && this.state.event.event._instance.range.end.toISOString()
+              }
+              data_team={open && this.state.resources}
+              defaultValue={
+                open && this.state.event.event._def.ui.backgroundColor
+              }
+            />
+          </DialogContent>
+          <DialogActions></DialogActions>
+        </Dialog>
       </div>
     );
   }
@@ -118,16 +237,7 @@ export default class SchedulerCalendar extends React.Component {
     return (
       <div className="demo-app-sidebar">
         <div className="demo-app-sidebar-section"></div>
-        <div className="demo-app-sidebar-section">
-          <label>
-            <input
-              type="checkbox"
-              checked={this.state.weekendsVisible}
-              onChange={this.handleWeekendsToggle}
-            ></input>
-            toggle weekends
-          </label>
-        </div>
+        <div className="demo-app-sidebar-section"></div>
         <div className="demo-app-sidebar-section">
           <h2>All Events ({this.state.currentEvents.length})</h2>
           <ul>{this.state.currentEvents.map(renderSidebarEvent)}</ul>
@@ -159,8 +269,10 @@ export default class SchedulerCalendar extends React.Component {
     }
   };
 
-  handleEventClick = (infos) => {
-    console.log(infos);
+  handleEventClick = (info) => {
+    console.log(info);
+    this.setState({ event: info, eventId: info.event._def.publicId });
+    this.handleToggle();
   };
 
   // handleEvents = (events) => {

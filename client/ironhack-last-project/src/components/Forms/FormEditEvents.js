@@ -3,6 +3,8 @@ import ApiHandler from "../../api/apiHandler";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Icon from "@material-ui/core/Icon";
+import DeleteIcon from "@material-ui/icons/Delete";
+import MenuItem from "@material-ui/core/MenuItem";
 
 class FormEditEvents extends React.Component {
   state = {};
@@ -53,56 +55,108 @@ class FormEditEvents extends React.Component {
 
   render() {
     return (
-      <form onChange={this.handleChange} onSubmit={this.handleSubmit}>
-        <h2 style={{ marginBottom: "30px" }}>Edit a user </h2>
-        <TextField
-          id="standard-basic"
-          label="First Name"
-          type="text"
-          InputLabelProps={{ shrink: true }}
-          variant="outlined"
-          name="firstName"
-          value={this.state.firstName}
-        >
-          {" "}
-          {this.state.firstName}
-        </TextField>
-        <br />
-        <TextField
-          id="standard-basic"
-          label="Last name"
-          type="text"
-          InputLabelProps={{ shrink: true }}
-          variant="outlined"
-          name="lastName"
-          value={this.state.lastName}
-        >
-          {" "}
-          {this.state.lastName}
-        </TextField>
-        <br />
-        <TextField
-          id="standard-basic"
-          label="Last name"
-          type="text"
-          InputLabelProps={{ shrink: true }}
-          variant="outlined"
-          name="lastName"
-          value={this.state.email}
-        >
-          {" "}
-          {this.state.email}
-        </TextField>
-        <br />
-        <Button
-          variant="contained"
-          color="primary"
-          type="submit"
-          endIcon={<Icon>send</Icon>}
-        >
-          Update
-        </Button>
-      </form>
+      <div>
+        <form onChange={this.props.onChange} onSubmit={this.props.onSubmit}>
+          <TextField
+            id="outlined-text-input"
+            label={`The title is : ${this.props.title}`}
+            type="text"
+            variant="outlined"
+            name="title"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            onChange={this.props.onChange}
+          />
+          <br />
+
+          <TextField
+            id="datetime-local"
+            label={
+              this.props.open &&
+              `Start date was: ${this.props.start.substring(0, 19)} `
+            }
+            type="datetime-local"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            name="start"
+            onChange={this.props.onChange}
+            defaultValue={this.props.CurrentDate}
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+          <br />
+
+          <br />
+          <TextField
+            id="datetime-local"
+            label={
+              this.props.open &&
+              `Ending date was: ${this.props.end.substring(0, 19)}`
+            }
+            name="end"
+            type="datetime-local"
+            onChange={this.props.onChange}
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+          <br />
+          <br />
+
+          <TextField
+            id="outlined-select-currency"
+            label={`Team was: ${this.props.defaultValue}`}
+            select
+            variant="outlined"
+            name="resourceId"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            onChange={this.props.onChange}
+          >
+            {this.props.open &&
+              this.props.data_team.map((option) => (
+                <MenuItem
+                  key={option.title.toLowerCase()}
+                  value={option.id.toLowerCase()}
+                  data-set={option.title}
+                >
+                  {option.title}
+                </MenuItem>
+              ))}
+          </TextField>
+
+          <br />
+          <br />
+
+          <Button
+            variant="contained"
+            color="primary"
+            type="submit"
+            endIcon={<Icon>add</Icon>}
+          >
+            Add
+          </Button>
+
+          <br />
+          <br />
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={this.props.handleDelete}
+            endIcon={
+              <Icon>
+                <DeleteIcon></DeleteIcon>
+              </Icon>
+            }
+          >
+            Delete
+          </Button>
+        </form>
+      </div>
     );
   }
 }
