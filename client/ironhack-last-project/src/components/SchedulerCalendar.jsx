@@ -43,11 +43,19 @@ export default class SchedulerCalendar extends React.Component {
   }
 
   handleUpdate(infos) {
+    let dataResource = "";
+    let dataColor = "";
+    if (infos.newResource === null) {
+      dataResource = infos.event._def.resourceIds[0];
+      dataColor = infos.event.backgroundColor;
+    } else {
+      dataResource = infos.newResource._resource.id;
+      dataColor = infos.newResource._resource.title;
+    }
+
     if (
       !window.confirm(
-        `Do you want to move the event here : ${infos.event.start.toISOString()} and affect it to this team : ${
-          infos.newResource._resource.title
-        }`
+        `Do you want to move the event here : ${infos.event.start.toISOString()} and affect it to this team : ${dataColor}`
       )
     ) {
       infos.revert();
@@ -58,8 +66,8 @@ export default class SchedulerCalendar extends React.Component {
         title: infos.event.title,
         start: infos.event.start,
         end: infos.event.end,
-        resourceId: infos.newResource._resource.id,
-        color: infos.newResource._resource.title,
+        resourceId: dataResource,
+        color: dataColor,
       })
         .then(() => {
           window.location.reload();
@@ -253,19 +261,27 @@ export default class SchedulerCalendar extends React.Component {
   };
 
   handleDateSelect = (selectInfo) => {
+    console.log(selectInfo);
     let title = prompt("Please enter a new title for your event");
     let calendarApi = selectInfo.view.calendar;
 
     calendarApi.unselect(); // clear date selection
 
     if (title) {
-      calendarApi.addEvent({
-        id: createEventId(),
-        title,
+      this.setState({
+        title: title,
         start: selectInfo.startStr,
         end: selectInfo.endStr,
-        allDay: selectInfo.allDay,
+        resourceId: selectInfo.resource._resource.id,
+        color: selectInfo.resource._resource.title,
       });
+      ApiHandler.post("/api/event/create", this.state)
+        .then(() => {
+          window.location.reload();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   };
 

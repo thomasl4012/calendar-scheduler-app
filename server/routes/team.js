@@ -3,6 +3,7 @@ const router = express.Router();
 const teamModel = require("../models/Team");
 const userModel = require("../models/User");
 const util = require("util");
+const eventModel = require("../models/Event");
 
 router.get("/", (req, res, next) => {
   // Get all the team
@@ -82,10 +83,50 @@ router.delete("/:id", (req, res, next) => {
         $pull: { team: teamId },
       }
     ),
+    eventModel.remove({ resourceId: teamId }),
   ])
-    .then(([team, user]) => {
+    .then(([team, user, event]) => {
       res.status(201);
-      console.log(util.format("team=%O user=%O", team, user));
+      console.log(util.format("team=%O user=%Oevnt=%O", team, user, event));
+    })
+    .catch(next);
+});
+
+//update team
+
+router.patch("/update", (req, res, next) => {
+  teamId = req.body.teamId;
+  userId = req.body.userId;
+  previousTeamId = req.body.previousTeamId;
+  Promise.all([
+    teamModel.updateMany(
+      {},
+      {
+        $pull: { userId: userId },
+      }
+    ),
+    teamModel.findByIdAndUpdate(teamId, {
+      $push: { userId: userId },
+    }),
+
+    userModel.findByIdAndUpdate(userId, {
+      $pop: { team: -1 },
+    }),
+    userModel.findByIdAndUpdate(userId, {
+      $push: { team: teamId },
+    }),
+  ])
+    .then(([team, team2, user, user2]) => {
+      res.status(201).json(team2);
+      console.log(
+        util.format(
+          "team=%O team2 =%O user=%O user2=%O",
+          team,
+          team2,
+          user,
+          user2
+        )
+      );
     })
     .catch(next);
 });

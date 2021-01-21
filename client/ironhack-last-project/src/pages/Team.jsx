@@ -7,11 +7,15 @@ import AddUserToTeam from "../components/Dialogs/AddUserToTeam";
 import Teamcreate from "../components/Dialogs/Teamcreate";
 import axios from "axios";
 import SearchBar from "../components/SearchBar";
+import EditTeam from "../components/Dialogs/EditTeam";
+import Icon from "@material-ui/core/Icon";
+import Button from "@material-ui/core/Button";
 
 export default class Team extends Component {
   state = {
     datafiltered: [],
     data_team: [],
+    previousTeamid: "",
   };
   componentDidMount() {
     //get all available team
@@ -122,6 +126,19 @@ export default class Team extends Component {
     this.setState({ [key]: value });
   };
 
+  handleUpdate = (event) => {
+    event.preventDefault();
+    ApiHandler.patch("/api/team/update", {
+      teamId: this.state.teamId,
+      userId: this.state.userId,
+      // previousTeamId: infos.event.end,
+    })
+      .then(() => {})
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   render() {
     return (
       <div>
@@ -147,7 +164,6 @@ export default class Team extends Component {
                   dataFiltered={this.state.datafiltered}
                   dataTeam={this.state.data_team}
                   addUser={this.addUser}
-                  UpdateUser={this.UpdateUser}
                   handleAddUserSubmit={this.AddUserSubmit}
                   handleChange={this.handleChange}
                 />
@@ -186,15 +202,29 @@ export default class Team extends Component {
                     {element.firstName}
                   </li>
                 ))}
-                <IconButton aria-label="Update">
-                  <UpdateIcon fontSize="small" key={`updateButton${index}`} />
-                </IconButton>
-                <IconButton
-                  aria-label="delete"
+                <br />
+
+                <EditTeam
+                  data={this.state}
+                  onChange={this.handleChange}
+                  onSubmit={this.handleUpdate}
+                  teamId={data.id}
+                />
+                <br />
+                <Button
+                  variant="contained"
+                  color="secondary"
                   onClick={() => this.handleDelete(data.id)}
+                  endIcon={
+                    <Icon>
+                      <DeleteIcon></DeleteIcon>
+                    </Icon>
+                  }
                 >
-                  <DeleteIcon key={`delButton${index}`} />
-                </IconButton>
+                  Delete
+                </Button>
+                <br />
+                <br />
               </div>
             </React.Fragment>
           ))}

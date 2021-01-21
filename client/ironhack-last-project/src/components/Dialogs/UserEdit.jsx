@@ -7,7 +7,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import FormEditUser from "../Forms/FormEditUser";
 
-export default class Signin extends Component {
+export default class UserEdit extends Component {
   state = {
     open: false,
     id: "",

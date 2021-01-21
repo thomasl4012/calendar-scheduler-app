@@ -7,7 +7,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import FormAddEvent from "../Forms/FormAddEvent";
 
-export default class AddUserToTeam extends Component {
+export default class CreateEvent extends Component {
   state = {
     open: false,
   };

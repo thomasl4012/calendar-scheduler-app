@@ -6,6 +6,7 @@ import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Icon from "@material-ui/core/Icon";
 import MenuItem from "@material-ui/core/MenuItem";
+import { capitalize } from "@material-ui/core";
 
 class FormCreateUser extends Component {
   static contextType = UserContext;
@@ -97,6 +98,7 @@ class FormCreateUser extends Component {
             autoComplete="current-password"
             variant="outlined"
             name="firstName"
+            required
             {...(errors &
               {
                 error: true,
@@ -115,6 +117,7 @@ class FormCreateUser extends Component {
             autoComplete="current-password"
             variant="outlined"
             name="lastName"
+            required
             {...(errors && {
               error: true,
               label: errors.lastName,
@@ -128,6 +131,7 @@ class FormCreateUser extends Component {
             id="outlined-email-input"
             label="Email"
             type="email"
+            required
             autoComplete="current-password"
             variant="outlined"
             name="email"
@@ -137,6 +141,7 @@ class FormCreateUser extends Component {
             id="outlined-select-currency"
             label="Choose your team"
             select
+            required
             variant="outlined"
             name="team"
             onChange={this.handleChange}
