@@ -140,7 +140,28 @@ export default class Team extends Component {
       userId: this.state.userId,
       // previousTeamId: infos.event.end,
     })
-      .then(() => {})
+      .then(() => {
+        ApiHandler.get("/api/team/users")
+          .then((apiResponse) => {
+            const data_team = apiResponse.data;
+            this.setState({
+              data_team,
+            });
+            //console.log(this.state);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+        ApiHandler.get("/api/user").then((apiResponse) => {
+          const data_user = apiResponse.data;
+
+          const datafiltered = data_user.filter((e) => e.team.length === 0);
+
+          this.setState({
+            datafiltered,
+          });
+        });
+      })
       .catch((err) => {
         console.log(err);
       });
