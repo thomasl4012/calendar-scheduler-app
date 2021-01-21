@@ -1,6 +1,6 @@
 .NavMain {
   background-color: #00bcd4;
-  color: rgb(57, 57, 57);
+  color: white;
   display: flex;
   align-items: center;
   margin-bottom: 25px;
@@ -11,11 +11,13 @@
 .NavMain .nav-list {
   margin-left: auto;
   display: flex;
+  color: white;
 }
 
 .NavMain .nav-list {
   margin-left: auto;
   display: flex;
+  color: white;
 }
 
 .nav-list-sub {

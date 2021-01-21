@@ -4,14 +4,14 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import resourceTimelinePlugin from "@fullcalendar/resource-timeline";
-import { INITIAL_EVENTS, createEventId } from "./event-utils";
+
 import ApiHandler from "../api/apiHandler";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
+
 import DialogTitle from "@material-ui/core/DialogTitle";
-import FormAddEvent from "./Forms/FormAddEvent";
+
 import FormEditEvents from "./Forms/FormEditEvents";
 
 export default class SchedulerCalendar extends React.Component {
@@ -148,7 +148,7 @@ export default class SchedulerCalendar extends React.Component {
   render() {
     const { open } = this.state;
     console.log("resourcees ==>", this.state.resources);
-    console.log("INITAL VIEWS ==>", INITIAL_EVENTS);
+
     console.log("STATE ==>", this.state.currentEvents);
     if (this.state.currentEvents[0]?.id) {
       console.log(
@@ -158,7 +158,7 @@ export default class SchedulerCalendar extends React.Component {
 
     return (
       <div>
-        <div>
+        <div style={{ margin: "10px" }}>
           {this.state.resources.length && (
             <FullCalendar
               plugins={[
@@ -175,6 +175,7 @@ export default class SchedulerCalendar extends React.Component {
               }}
               initialView="resourceTimeline"
               editable={true}
+              resourceLabelText={"roro"}
               nowIndicator={true}
               height={"auto"}
               selectable={true}
@@ -275,6 +276,7 @@ export default class SchedulerCalendar extends React.Component {
         resourceId: selectInfo.resource._resource.id,
         color: selectInfo.resource._resource.title,
       });
+
       ApiHandler.post("/api/event/create", this.state)
         .then(() => {
           window.location.reload();

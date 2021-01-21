@@ -6,7 +6,6 @@ import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Icon from "@material-ui/core/Icon";
 import MenuItem from "@material-ui/core/MenuItem";
-import { capitalize } from "@material-ui/core";
 
 class FormCreateUser extends Component {
   static contextType = UserContext;
@@ -30,6 +29,8 @@ class FormCreateUser extends Component {
     if (this.state.lastName.trim() === "")
       errors.lastName = "Last name is required";
 
+    if (this.state.email.trim() === "") errors.email = "Email is required";
+
     return Object.keys(errors).length === 0 ? null : errors;
   };
 
@@ -47,20 +48,24 @@ class FormCreateUser extends Component {
       });
   }
 
-  validateProperty = ({ name, value }) => {
-    if (name === "firstName") {
-      if (value.trim() === "") return "First name is required";
+  validateProperty = (event) => {
+    if (event.target.name === "firstName") {
+      if (event.target.value.trim() === "") return "First name is required";
     }
-    if (name === "lastName") {
-      if (value.trim() === "") return "Last name  is required";
+    if (event.target.name === "lastName") {
+      if (event.target.value.trim() === "") return "Last name is required";
+    }
+    if (event.target.name === "email") {
+      if (event.target.value.trim() === "") return "Email is required";
     }
   };
 
   handleChange = (event) => {
     const errors = { ...this.state.errors };
-    const errorMessage = this.validateProperty(event.target);
+    const errorMessage = this.validateProperty(event);
     if (errorMessage) errors[event.target.name] = errorMessage;
     else delete errors[event.target.name];
+
     const value = event.target.value;
     const key = event.target.name;
 
@@ -69,12 +74,10 @@ class FormCreateUser extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-
     const errors = this.validate();
-    console.log(errors);
     this.setState({ errors: errors || {} });
-
     if (errors) return;
+
     ApiHandler.post("/api/user/create", this.state)
       .then((data) => {
         console.log(data);
@@ -98,15 +101,13 @@ class FormCreateUser extends Component {
             autoComplete="current-password"
             variant="outlined"
             name="firstName"
-            required
-            {...(errors &
-              {
-                error: true,
-                label: errors.firstName,
-                variant: "outlined",
-                id: "outlined-error-helper-text",
-                defaultValue: errors.firstName,
-              })}
+            {...(errors.firstName && {
+              error: true,
+              label: errors.firstName,
+              variant: "outlined",
+              id: "outlined-error-helper-text",
+              defaultValue: errors.firstName,
+            })}
           />
 
           <br />
@@ -117,13 +118,12 @@ class FormCreateUser extends Component {
             autoComplete="current-password"
             variant="outlined"
             name="lastName"
-            required
-            {...(errors && {
+            {...(errors.lastName && {
               error: true,
               label: errors.lastName,
               variant: "outlined",
               id: "outlined-error-helper-text",
-              defaultValue: errors.firstName,
+              defaultValue: errors.lastName,
             })}
           />
           <br />
@@ -131,17 +131,22 @@ class FormCreateUser extends Component {
             id="outlined-email-input"
             label="Email"
             type="email"
-            required
             autoComplete="current-password"
             variant="outlined"
             name="email"
+            {...(errors.email && {
+              error: true,
+              label: errors.email,
+              variant: "outlined",
+              id: "outlined-error-helper-text",
+              defaultValue: errors.email,
+            })}
           />
           <br />
           <TextField
             id="outlined-select-currency"
             label="Choose your team"
             select
-            required
             variant="outlined"
             name="team"
             onChange={this.handleChange}

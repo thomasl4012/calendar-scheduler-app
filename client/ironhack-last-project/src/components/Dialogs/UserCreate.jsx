@@ -32,7 +32,7 @@ export default class UserCreate extends Component {
           <DialogTitle id="form-dialog-title">Create a user</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              Please fillup the from to create a user
+              Please fillup the form to add a user
             </DialogContentText>
             <FormCreateUser />
           </DialogContent>

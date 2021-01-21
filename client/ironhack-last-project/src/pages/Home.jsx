@@ -41,6 +41,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(8, 0, 6),
   },
   cardHeader: {
+    color: "white",
     backgroundColor:
       theme.palette.mode === "light"
         ? theme.palette.grey[200]
@@ -70,7 +71,6 @@ const tiers = [
     price: "0",
     description: [
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris mi libero, egestas vel est ut, vestibulum ultricies dolor. Nullam ac tristique est, eu maximus sem. Nunc lacus ipsum, eleifend nec mi malesuada",
-      ,
     ],
     buttonText: "Sign up for free",
     buttonVariant: "outlined",
@@ -139,7 +139,7 @@ export default function Pricing() {
           color="textSecondary"
           component="p"
         >
-          Plan the work of your different team with this awesome app
+          Plan the work of your different teams with this awesome app
         </Typography>
       </Container>
       {/* End hero unit */}

@@ -32,12 +32,12 @@ const NavMain = (props) => {
               <NavLink to="/scheduler">Scheduler</NavLink>
             </li>
             <li>
+              <NavLink to="/team">Manage Teams</NavLink>
+            </li>
+            <li>
               <NavLink to="/user">Manage Users</NavLink>
             </li>
 
-            <li>
-              <NavLink to="/team">Manage Teams</NavLink>
-            </li>
             <li>
               <NavLink to="/profile">
                 {context.user && context.user.email}

@@ -20,10 +20,10 @@ function App() {
         <Route exact path="/" component={Home} />
         <Route exact path="/signin" component={Signin} />
         <Route exact path="/signup" component={Signup} />
-        <Route exact path="/user" component={User} />
-        <Route exact path="/team" component={Team} />
+        <ProtectedRoute exact path="/user" component={User} />
+        <ProtectedRoute exact path="/team" component={Team} />
         <Route exact path="/test" component={FormAddEvent} />
-        <Route exact path="/scheduler" component={SchedulerView} />
+        <ProtectedRoute exact path="/scheduler" component={SchedulerView} />
         <Route exact path="/user/edit/:id" component={EditUser} />
         <Route exact path="/event/delete/:id" component={deleteEventView} />
         <ProtectedRoute exact path="/profile" component={Profile} />
