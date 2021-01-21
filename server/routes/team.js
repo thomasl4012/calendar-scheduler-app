@@ -86,7 +86,7 @@ router.delete("/:id", (req, res, next) => {
     eventModel.remove({ resourceId: teamId }),
   ])
     .then(([team, user, event]) => {
-      res.status(201);
+      res.status(200).json(user);
       console.log(util.format("team=%O user=%Oevnt=%O", team, user, event));
     })
     .catch(next);

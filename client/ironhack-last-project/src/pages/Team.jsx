@@ -1,11 +1,10 @@
 import React, { Component } from "react";
 import ApiHandler from "../api/apiHandler";
-import UpdateIcon from "@material-ui/icons/Update";
-import IconButton from "@material-ui/core/IconButton";
+
 import DeleteIcon from "@material-ui/icons/Delete";
 import AddUserToTeam from "../components/Dialogs/AddUserToTeam";
 import Teamcreate from "../components/Dialogs/Teamcreate";
-import axios from "axios";
+
 import SearchBar from "../components/SearchBar";
 import EditTeam from "../components/Dialogs/EditTeam";
 import Icon from "@material-ui/core/Icon";
@@ -52,43 +51,51 @@ export default class Team extends Component {
     );
     //Delete the team in the back
     this.setState({ data_team });
-    ApiHandler.delete(`/api/team/${teamId}`);
 
-    ApiHandler.get("/api/user").then((res) => {
-      console.log("result2 from delete===>", res);
+    ApiHandler.delete(`/api/team/${teamId}`)
+      .then((res) => {
+        console.log("step1 ===>", res);
+        ApiHandler.get("/api/user").then((res2) => {
+          if (res2.status === 200) {
+            console.log("res2 ===>", res2);
+            const datafiltered = res2.data.filter((e) => e.team.length === 0);
 
-      const datafiltered = res.data.filter((e) => e.team.length === 0);
-
-      console.log("datafiltered from delete===>", datafiltered);
-      this.setState({
-        datafiltered: datafiltered,
+            console.log("datafiltered from delete===>", datafiltered);
+            this.setState({
+              datafiltered: datafiltered,
+            });
+          } else {
+            window.location.reload();
+          }
+        });
+      })
+      .catch((reason) => {
+        console.log(reason);
       });
-    }); //Fetch the users back again to make them selectable again
   };
 
   //Handle submit for adding user to a specific team
-  AddUserSubmit = async (event) => {
+  AddUserSubmit = (event) => {
     event.preventDefault();
     const data = {
       team_Id: this.state.team,
       user_Id: this.state.user,
     };
-    await axios
-      .all([
-        ApiHandler.post("/api/team/add", data),
-        ApiHandler.get("/api/user"),
-      ])
-      .then(
-        axios.spread((result1, result2) => {
-          console.log("result1 ==>", result1.data, "result2 ==>", result2.data);
+
+    ApiHandler.post("/api/team/add", data)
+      .then((result1) => {
+        console.log(result1);
+        this.setState({
+          data_team: result1.data,
+        });
+        ApiHandler.get("/api/user").then((result2) => {
           const datafiltered = result2.data.filter((e) => e.team.length === 0);
           console.log(datafiltered);
           this.setState({
             datafiltered: datafiltered,
-            data_team: result1.data,
           });
-        })
-      )
+        });
+      })
       .catch((error) => {
         console.log(error);
       });
