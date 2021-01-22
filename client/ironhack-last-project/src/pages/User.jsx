@@ -134,6 +134,7 @@ export default function EnhancedTable() {
     ApiHandler.get("/api/user/teams")
       .then((apiResponse) => {
         console.log(apiResponse);
+
         setData(apiResponse.data);
       })
       .catch(function (error) {

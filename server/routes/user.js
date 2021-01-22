@@ -27,7 +27,8 @@ router.get("/teams", (req, res, next) => {
 });
 
 router.post("/create", (req, res, next) => {
-  const { email, firstName, lastName, team } = req.body;
+  console.log("REQBODY=====> ", req.body);
+  const { email, firstName, lastName, team } = req.body.account;
 
   UserModel.findOne({ email }).then((userDocument) => {
     if (userDocument) {
