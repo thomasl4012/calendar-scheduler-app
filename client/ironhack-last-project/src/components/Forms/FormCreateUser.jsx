@@ -6,32 +6,39 @@ import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Icon from "@material-ui/core/Icon";
 import MenuItem from "@material-ui/core/MenuItem";
+import Joi from "joi-browser";
 
 class FormCreateUser extends Component {
   static contextType = UserContext;
 
   state = {
     data: [],
-    team: "",
-    color: "",
-    firstName: " ",
-    lastName: "",
-    email: "",
+    account: {
+      team: "",
+
+      firstName: "",
+      lastName: "",
+      email: "",
+    },
     errors: {},
   };
 
+  schema = {
+    firstName: Joi.string().required().label("First name"),
+    lastName: Joi.string().required().label("Last name"),
+    email: Joi.string().email().required().label("Email"),
+    team: Joi.string().required().label("Team"),
+  };
   validate = () => {
+    const options = {
+      abortEarly: false,
+    };
+    const result = Joi.validate(this.state.account, this.schema, options);
+    console.log(result);
+    if (!result.error) return null;
     const errors = {};
-
-    if (this.state.firstName.trim() === "")
-      errors.firstName = "First name is required";
-
-    if (this.state.lastName.trim() === "")
-      errors.lastName = "Last name is required";
-
-    if (this.state.email.trim() === "") errors.email = "Email is required";
-
-    return Object.keys(errors).length === 0 ? null : errors;
+    for (let item of result.error.details) errors[item.path[0]] = item.message;
+    return errors;
   };
 
   componentDidMount() {
@@ -49,15 +56,12 @@ class FormCreateUser extends Component {
   }
 
   validateProperty = (event) => {
-    if (event.target.name === "firstName") {
-      if (event.target.value.trim() === "") return "First name is required";
-    }
-    if (event.target.name === "lastName") {
-      if (event.target.value.trim() === "") return "Last name is required";
-    }
-    if (event.target.name === "email") {
-      if (event.target.value.trim() === "") return "Email is required";
-    }
+    const value = event.target.value;
+    const key = event.target.name;
+    const obj = { [key]: value };
+    const schema = { [key]: this.schema[key] };
+    const { error } = Joi.validate(obj, schema);
+    return error ? error.details[0].message : null;
   };
 
   handleChange = (event) => {
@@ -65,11 +69,12 @@ class FormCreateUser extends Component {
     const errorMessage = this.validateProperty(event);
     if (errorMessage) errors[event.target.name] = errorMessage;
     else delete errors[event.target.name];
+    const account = { ...this.state.account };
 
     const value = event.target.value;
     const key = event.target.name;
-
-    this.setState({ [key]: value, errors });
+    account[key] = value;
+    this.setState({ account, errors });
   };
 
   handleSubmit = (event) => {
@@ -168,6 +173,9 @@ class FormCreateUser extends Component {
             color="primary"
             type="submit"
             endIcon={<Icon>send</Icon>}
+            {...(this.validate() && {
+              disabled: true,
+            })}
           >
             Create
           </Button>

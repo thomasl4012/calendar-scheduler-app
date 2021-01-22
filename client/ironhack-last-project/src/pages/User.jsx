@@ -167,21 +167,21 @@ export default function EnhancedTable() {
   };
 
   const handleDelete = (userId) => {
+    const usersUpdated = data.filter((p) => p.id !== userId);
+    setData(usersUpdated);
+
     ApiHandler.removeUser(userId)
       .then((apiResponse) => {
-        const usersUpdated = data.filter((p) => p.id !== userId);
-        setData(usersUpdated);
+        ApiHandler.get("/api/user/teams")
+          .then((apiResponse) => {
+            console.log("coucou ==>", apiResponse);
+            setData(apiResponse.data);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
       })
       .catch((error) => {
-        console.log(error);
-      });
-
-    ApiHandler.get("/api/user/teams")
-      .then((apiResponse) => {
-        console.log("coucou ==>", apiResponse);
-        setData(apiResponse.data);
-      })
-      .catch(function (error) {
         console.log(error);
       });
   };

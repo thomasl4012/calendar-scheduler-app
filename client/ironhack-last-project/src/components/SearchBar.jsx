@@ -14,7 +14,7 @@ export class SearchBar extends Component {
             className="form-control"
             name="search"
             aria-label="Small"
-            placeholder="Search"
+            placeholder="Search..."
             aria-describedby="inputGroup-sizing-sm"
             style={{ marginTop: "13px" }}
           ></input>
